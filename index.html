@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayFit x Crunch&Sip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F4FFF6; --bg2:#E8FFE8; --white:#fff;
+  --border:rgba(0,0,0,.08);
+  --sh:0 4px 16px rgba(0,120,60,.09);
+  --sh-lg:0 8px 32px rgba(0,120,60,.15);
+  --green:#00C853; --green-lt:#CCFFE7; --green-b:#00913D;
+  --pink:#FF4081; --pink-lt:#FFE0EC; --pink-b:#C2003C;
+  --orange:#FF6B35; --orange-lt:#FFE8D6; --orange-b:#D44000;
+  --blue:#00B4D8; --blue-lt:#D0F4FF; --blue-b:#0076A8;
+  --purple:#7C4DFF; --purple-lt:#EDE7FF; --purple-b:#5400C4;
+  --yellow:#FFD600; --yellow-lt:#FFFDE0; --yellow-b:#B89A00;
+  --red:#FF5252; --red-lt:#FFEBEE;
+  --teal:#00BFA5; --teal-lt:#E0F2F1; --teal-b:#00796B;
+  --indigo:#5C6BC0; --indigo-lt:#E8EAF6; --indigo-b:#3949AB;
+  --lime:#76FF03; --lime-lt:#F0FFF0; --lime-b:#33A300;
+  --text:#1B2E1B; --mid:#3D5C3D; --dim:#7A9E7A;
+  --r:18px; --rs:12px; --rxl:24px;
+  --carrot:#FF8F00; --carrot-lt:#FFF3E0; --carrot-b:#E65100;
+  --leaf:#2E7D32; --leaf-lt:#E8F5E9;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(0,200,83,.08) 2px,transparent 2px);background-size:26px 26px;pointer-events:none;z-index:0;}
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:block;}
+#sw.active,#st.active{display:flex;}
+
+@keyframes up{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pop{0%{transform:scale(.85);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+@keyframes bup{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes glow-green{0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,.4),var(--sh-lg);}50%{box-shadow:0 0 0 16px rgba(0,200,83,0),var(--sh-lg);}}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0);}100%{opacity:0;transform:translateY(105vh) rotate(720deg);}}
+@keyframes bpulse{0%,100%{box-shadow:0 0 0 3000px rgba(0,0,0,.62),0 0 0 0 rgba(255,214,0,.8);}50%{box-shadow:0 0 0 3000px rgba(0,0,0,.62),0 0 0 8px rgba(255,214,0,.2);}}
+@keyframes shimmer{0%{background-position:200% center;}100%{background-position:-200% center;}}
+@keyframes star-trail{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-70px) scale(.4);}}
+@keyframes wobble{0%,100%{transform:rotate(-3deg);}50%{transform:rotate(3deg);}}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,200,83,.45);}100%{box-shadow:0 0 0 14px rgba(0,200,83,0);}}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes spin{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+@keyframes speech-pop{0%{opacity:0;transform:scale(.7) translateY(6px);}70%{transform:scale(1.06) translateY(-2px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes zzz{0%{opacity:0;transform:translate(0,0) scale(.6);}50%{opacity:1;}100%{opacity:0;transform:translate(8px,-14px) scale(1);}}
+@keyframes leaf-wave{0%,100%{transform:rotate(-5deg) scaleX(1);}50%{transform:rotate(5deg) scaleX(1.05);}}
+@keyframes floatie{0%{transform:translateY(0) rotate(0deg);opacity:.35;}50%{transform:translateY(-18px) rotate(8deg);opacity:.55;}100%{transform:translateY(0) rotate(0deg);opacity:.35;}}
+@keyframes crunchy-bounce{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-12px) scale(1.04);}}
+@keyframes crunchy-cheer{0%{transform:rotate(-12deg) scale(1);}25%{transform:rotate(12deg) scale(1.12);}50%{transform:rotate(-9deg) scale(1.09);}75%{transform:rotate(9deg) scale(1.12);}100%{transform:rotate(0) scale(1);}}
+@keyframes crunchy-sleep{0%,100%{transform:rotate(-3deg);}50%{transform:rotate(3deg);}}
+@keyframes crunchy-happy{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+@keyframes splash-in{0%{opacity:0;transform:translateY(30px) scale(.92);}100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes badge-in{0%{opacity:0;transform:scale(.7) rotate(-8deg);}70%{transform:scale(1.1) rotate(2deg);}100%{opacity:1;transform:scale(1) rotate(0);}}
+
+/* ===== WELCOME ===== */
+#sw{flex-direction:column;align-items:center;justify-content:flex-start;min-height:100vh;padding:0;background:linear-gradient(160deg,#E8F5E9 0%,#F1F8E9 40%,#FFFDE7 100%);overflow-x:hidden;}
+.w-floaties{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.floatie{position:absolute;font-size:2.2rem;animation:floatie 4s ease-in-out infinite;}
+.w-hero{width:100%;padding:2.5rem 1rem 1.5rem;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
+.w-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.85);border:2px solid var(--green);border-radius:100px;padding:.3rem .85rem;font-size:.7rem;font-weight:800;color:var(--green-b);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1.1rem;box-shadow:var(--sh);backdrop-filter:blur(4px);}
+.logo-t{font-family:'Fredoka One',sans-serif;font-size:4rem;line-height:1;background:linear-gradient(135deg,var(--carrot),var(--leaf),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.2rem;}
+.logo-s{color:var(--mid);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-align:center;max-width:240px;line-height:1.5;}
+.wcard{background:rgba(255,255,255,.96);border-radius:var(--rxl);box-shadow:var(--sh-lg);padding:1.8rem;width:calc(100% - 2rem);max-width:400px;position:relative;z-index:1;border:2.5px solid rgba(0,200,83,.22);margin-bottom:2rem;animation:splash-in .5s ease both;}
+.wcard h2{font-family:'Fredoka One',sans-serif;font-size:1.8rem;margin-bottom:.2rem;color:var(--leaf);}
+.wcard>p{color:var(--mid);font-size:.87rem;font-weight:700;margin-bottom:1.3rem;line-height:1.55;}
+.lbl{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:.4rem;}
+.field{width:100%;background:var(--bg);border:2px solid var(--border);border-radius:var(--rs);padding:.85rem 1rem;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;transition:border-color .2s;margin-bottom:1rem;}
+.field:focus{border-color:var(--green);}
+.av-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+.avb{font-size:1.9rem;background:var(--bg);border:2px solid var(--border);border-radius:12px;width:54px;height:54px;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;}
+.avb:hover{transform:scale(1.12);}
+.avb.sel{background:var(--green-lt);border-color:var(--green);transform:scale(1.15);}
+.gbtn{width:100%;background:linear-gradient(135deg,var(--green),#00E676);border:none;border-radius:var(--rs);padding:1.1rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.6rem;cursor:pointer;box-shadow:0 5px 0 var(--green-b);transition:all .2s;}
+.gbtn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--green-b);}
+.gbtn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green-b);}
+
+/* ===== CRUNCHY SPLASH (big version on welcome) ===== */
+.w-crunchy{position:relative;display:flex;flex-direction:column;align-items:center;margin-bottom:.8rem;animation:crunchy-bounce 2.5s ease-in-out infinite;}
+.wc-leaves{display:flex;gap:4px;align-items:flex-end;margin-bottom:-6px;position:relative;z-index:2;}
+.wc-leaf{background:linear-gradient(180deg,#66BB6A,#2E7D32);border-radius:50% 50% 15% 15%;transform-origin:bottom center;}
+.wc-leaf:nth-child(1){width:13px;height:28px;transform:rotate(-28deg);}
+.wc-leaf:nth-child(2){width:16px;height:36px;transform:rotate(-10deg);}
+.wc-leaf:nth-child(3){width:15px;height:32px;transform:rotate(4deg);}
+.wc-leaf:nth-child(4){width:12px;height:24px;transform:rotate(22deg);}
+.wc-body{width:90px;height:108px;background:linear-gradient(170deg,#FFAB40 0%,#FF6B35 55%,#E64A19 100%);border-radius:50% 50% 38% 38% / 30% 30% 55% 55%;position:relative;border:3.5px solid #BF360C;box-shadow:0 6px 22px rgba(230,74,25,.35);}
+.wc-eyes{display:flex;gap:20px;position:absolute;top:30px;left:50%;transform:translateX(-50%);}
+.wc-eye{width:13px;height:13px;border-radius:50%;background:#1B2E1B;position:relative;}
+.wc-eye::after{content:'';position:absolute;top:2px;left:2px;width:4px;height:4px;border-radius:50%;background:#fff;}
+.wc-mouth{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);width:30px;height:15px;border-bottom:3.5px solid #1B2E1B;border-left:2.5px solid #1B2E1B;border-right:2.5px solid #1B2E1B;border-radius:0 0 16px 16px;}
+.wc-blush{position:absolute;width:16px;height:10px;border-radius:50%;background:rgba(255,100,50,.45);top:42px;}
+.wc-blush.left{left:10px;}
+.wc-blush.right{right:10px;}
+.wc-name{font-family:'Fredoka One',sans-serif;font-size:1.1rem;color:var(--carrot-b);margin-top:.5rem;text-align:center;}
+.wc-tag{font-size:.67rem;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem;}
+
+/* ===== TUTORIAL ===== */
+#st{flex-direction:column;align-items:center;min-height:100vh;padding:1.2rem 1rem 2rem;background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 50%,#F1F8E9 100%);}
+.tbar{width:100%;max-width:440px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.tbar-logo{font-family:'Fredoka One',sans-serif;font-size:1.4rem;background:linear-gradient(135deg,var(--carrot),var(--leaf));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dots{display:flex;gap:.35rem;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,.12);transition:all .3s;}
+.dot.on{background:var(--green);transform:scale(1.3);}
+.dot.done{background:var(--green-lt);border:2px solid var(--green);}
+#tslide{width:100%;max-width:440px;}
+.scard{background:var(--white);border-radius:var(--rxl);box-shadow:var(--sh-lg);padding:1.5rem;margin-bottom:1rem;}
+.stag{display:inline-block;border-radius:100px;padding:.3rem .9rem;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.8rem;}
+.stag.g{background:var(--green-lt);color:var(--green-b);}
+.stag.b{background:var(--blue-lt);color:var(--blue-b);}
+.stag.o{background:var(--orange-lt);color:var(--orange-b);}
+.stag.p{background:var(--purple-lt);color:var(--purple-b);}
+.stag.y{background:var(--yellow-lt);color:var(--yellow-b);}
+.stag.pk{background:var(--pink-lt);color:var(--pink-b);}
+.stag.i{background:var(--indigo-lt);color:var(--indigo-b);}
+.stag.t{background:var(--teal-lt);color:var(--teal-b);}
+.shero{font-size:3.5rem;text-align:center;display:block;margin-bottom:.6rem;animation:bup 2s ease-in-out infinite;}
+.stitle{font-family:'Fredoka One',sans-serif;font-size:1.7rem;margin-bottom:.45rem;}
+.sbody{font-size:.9rem;color:var(--mid);line-height:1.72;font-weight:700;}
+.tnav{display:flex;gap:.65rem;width:100%;max-width:440px;}
+.tbk{flex:1;background:var(--white);border:2px solid var(--border);border-radius:var(--rs);padding:.85rem;color:var(--mid);font-family:'Fredoka One',sans-serif;font-size:1.15rem;cursor:pointer;box-shadow:var(--sh);}
+.tnx{flex:2;background:linear-gradient(135deg,var(--orange),#FF9A5C);border:none;border-radius:var(--rs);padding:.85rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.15rem;cursor:pointer;box-shadow:0 4px 0 var(--orange-b);transition:all .2s;}
+.tnx:hover{transform:translateY(-2px);}
+.tnx.locked{opacity:.45;cursor:not-allowed;transform:none;}
+.tnx.go{background:linear-gradient(135deg,var(--green),#00E676);box-shadow:0 4px 0 var(--green-b);}
+
+/* ===== FOOD SORT ===== */
+.food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0;}
+.food-item{background:var(--bg);border:2.5px solid var(--border);border-radius:var(--r);padding:.85rem .5rem;text-align:center;cursor:pointer;transition:all .2s;user-select:none;}
+.food-item:active{transform:scale(.93);}
+.food-item .fi-e{font-size:2.2rem;display:block;}
+.food-item .fi-n{font-size:.72rem;font-weight:800;color:var(--mid);margin-top:.3rem;}
+.food-item.picked{border-color:var(--blue);background:var(--blue-lt);}
+.food-item.correct{border-color:var(--green);background:var(--green-lt);}
+.food-item.wrong{border-color:var(--red);background:var(--red-lt);}
+.food-item.missed{border-color:var(--orange);background:var(--orange-lt);}
+.check-btn{width:100%;background:var(--indigo);border:none;border-radius:var(--rs);padding:.75rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.15rem;cursor:pointer;box-shadow:0 3px 0 var(--indigo-b);transition:all .2s;}
+.check-btn:hover{transform:translateY(-1px);}
+.check-btn:disabled{opacity:.45;cursor:default;transform:none;}
+.food-fb{border-radius:var(--rs);padding:.7rem .85rem;font-size:.84rem;font-weight:700;display:none;margin-top:.7rem;line-height:1.55;}
+.food-fb.show{display:block;animation:up .3s ease;}
+.food-fb.good{background:var(--green-lt);border:2px solid var(--green);color:var(--green-b);}
+.food-fb.ok{background:var(--orange-lt);border:2px solid var(--orange);color:var(--orange-b);}
+
+/* ===== FLIP CARDS ===== */
+.flip-row{display:flex;gap:.6rem;margin:1rem 0;}
+.flip-wrap{flex:1;perspective:600px;height:115px;cursor:pointer;}
+.flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s;}
+.flip-wrap.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.7rem;backface-visibility:hidden;text-align:center;}
+.flip-front{background:var(--bg);border:2px solid var(--border);font-size:.8rem;font-weight:800;color:var(--mid);gap:.35rem;}
+.flip-front .fe{font-size:2rem;}
+.flip-back{background:var(--green-lt);border:2.5px solid var(--green);transform:rotateY(180deg);}
+.flip-back .fstat{font-family:'Fredoka One',sans-serif;font-size:1.7rem;color:var(--green-b);}
+.flip-back .fdesc{font-size:.68rem;font-weight:800;color:var(--green-b);line-height:1.4;}
+.flip-hint{text-align:center;font-size:.78rem;font-weight:700;color:var(--dim);margin-top:.25rem;}
+
+/* ===== BREATHING ===== */
+.breath-wrap{display:flex;flex-direction:column;align-items:center;padding:1rem 0 .5rem;}
+.breath-circle{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--blue-lt),var(--teal-lt));border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:2.8rem;transform:scale(1);transition:transform 4s ease,background .8s ease,border-color .8s ease;}
+.breath-circle.inhaling{transform:scale(1.5);background:linear-gradient(135deg,#c3e8ff,#daeeff);border-color:var(--blue);}
+.breath-circle.holding{transform:scale(1.5);background:linear-gradient(135deg,var(--teal-lt),var(--green-lt));border-color:var(--teal);}
+.breath-circle.exhaling{transform:scale(1);background:linear-gradient(135deg,var(--green-lt),#daeeff);border-color:var(--green);}
+.breath-label{font-family:'Fredoka One',sans-serif;font-size:1.35rem;color:var(--blue-b);margin-top:1rem;min-height:1.8rem;text-align:center;transition:color .5s;}
+.breath-sub{font-size:.78rem;font-weight:700;color:var(--dim);text-align:center;margin-top:.2rem;}
+.breath-start{background:var(--teal);border:none;border-radius:100px;padding:.65rem 1.8rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.05rem;cursor:pointer;margin-top:1rem;box-shadow:0 3px 0 var(--teal-b);transition:all .2s;}
+.breath-start:hover{transform:translateY(-1px);}
+.breath-done{display:none;background:var(--green-lt);border:2px solid var(--green);border-radius:var(--rs);padding:.7rem .9rem;font-size:.86rem;font-weight:700;color:var(--green-b);text-align:center;margin-top:.9rem;line-height:1.55;}
+.breath-done.show{display:block;animation:up .3s ease;}
+
+/* ===== SCENARIO ===== */
+.sscen{background:var(--carrot-lt);border-radius:var(--rs);padding:.9rem 1rem;font-size:.9rem;font-weight:700;margin:.9rem 0;line-height:1.55;border-left:4px solid var(--carrot);}
+.sopt{width:100%;background:var(--bg);border:2.5px solid var(--border);border-radius:var(--rs);padding:.8rem .9rem;text-align:left;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;margin-bottom:.45rem;transition:all .18s;display:flex;align-items:center;gap:.65rem;}
+.sopt:hover:not(:disabled){border-color:var(--green);background:var(--green-lt);transform:translateX(3px);}
+.sopt .sl{width:28px;height:28px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;font-family:'Fredoka One',sans-serif;}
+.sopt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green-b);}
+.sopt.correct .sl{background:var(--green);border-color:var(--green);color:#fff;}
+.sopt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.sopt.wrong .sl{background:var(--red);border-color:var(--red);color:#fff;}
+.sopt:disabled{cursor:default;transform:none!important;}
+.sfb{border-radius:var(--rs);padding:.75rem .9rem;font-size:.84rem;font-weight:700;display:none;margin-top:.35rem;line-height:1.55;}
+.sfb.good{background:var(--green-lt);border:2px solid var(--green);color:var(--green-b);}
+.sfb.bad{background:var(--red-lt);border:2px solid var(--red);color:var(--red);}
+.sfb.show{display:block;animation:up .3s ease;}
+
+/* ===== STRESS DIAGRAM ===== */
+.chain{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.9rem;flex-wrap:wrap;}
+.chain-item{background:var(--orange-lt);border:2px solid var(--orange);border-radius:100px;padding:.28rem .75rem;font-size:.7rem;font-weight:800;color:var(--orange-b);}
+.chain-arrow{font-size:.9rem;color:var(--dim);}
+
+/* ===== CRUNCHY MASCOT (home screen) ===== */
+.crunchy-wrap{position:relative;display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.crunchy-leaves{display:flex;gap:3px;align-items:flex-end;margin-bottom:-5px;position:relative;z-index:2;}
+.crunchy-leaf{background:linear-gradient(180deg,#81C784,var(--leaf));border-radius:50% 50% 12% 12%;transform-origin:bottom center;}
+.crunchy-leaf:nth-child(1){width:10px;height:20px;transform:rotate(-24deg);}
+.crunchy-leaf:nth-child(2){width:12px;height:26px;transform:rotate(-8deg);}
+.crunchy-leaf:nth-child(3){width:11px;height:23px;transform:rotate(5deg);}
+.crunchy-leaf:nth-child(4){width:9px;height:18px;transform:rotate(20deg);}
+.crunchy-body{width:70px;height:82px;background:linear-gradient(170deg,#FFAB40 0%,#FF6B35 55%,#E64A19 100%);border-radius:50% 50% 38% 38% / 30% 30% 55% 55%;position:relative;border:3px solid var(--carrot-b);box-shadow:0 4px 14px rgba(230,74,25,.3);cursor:pointer;transition:transform .2s;}
+.crunchy-body:hover{transform:scale(1.08);}
+.crunchy-body.bounce{animation:crunchy-bounce .5s ease;}
+.crunchy-body.cheer{animation:crunchy-cheer .6s ease;}
+.crunchy-body.sleep{animation:crunchy-sleep 2s ease-in-out infinite;}
+.crunchy-body.happy{animation:crunchy-happy 3s ease-in-out infinite;}
+.crunchy-eyes{display:flex;gap:14px;position:absolute;top:22px;left:50%;transform:translateX(-50%);}
+.crunchy-eye{width:10px;height:10px;border-radius:50%;background:#1B2E1B;position:relative;}
+.crunchy-eye::after{content:'';position:absolute;top:1px;left:2px;width:3px;height:3px;border-radius:50%;background:#fff;}
+.crunchy-mouth{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:24px;height:12px;border-bottom:3px solid #1B2E1B;border-left:2px solid #1B2E1B;border-right:2px solid #1B2E1B;border-radius:0 0 14px 14px;}
+.crunchy-blush{position:absolute;width:13px;height:8px;border-radius:50%;background:rgba(255,120,50,.45);top:33px;}
+.crunchy-blush.left{left:8px;}
+.crunchy-blush.right{right:8px;}
+/* face states */
+.crunchy-body.excited .crunchy-eye{width:11px;height:11px;background:#FF6B35;}
+.crunchy-body.excited .crunchy-mouth{width:28px;height:15px;border-width:3.5px;}
+.crunchy-body.sad .crunchy-mouth{border-bottom:none;border-top:3px solid #1B2E1B;border-radius:12px 12px 0 0;bottom:14px;}
+.crunchy-body.surprised .crunchy-mouth{border-radius:50%;width:14px;height:14px;border:3px solid #1B2E1B;bottom:15px;}
+.crunchy-body.sleep .crunchy-eye{height:3px;border-radius:2px;}
+.crunchy-body.sleep .crunchy-mouth{width:16px;border-width:2px;}
+/* zzz bubbles */
+.crunchy-zzz{position:absolute;right:-8px;top:-10px;font-family:'Fredoka One',sans-serif;font-size:.9rem;color:var(--blue-b);opacity:0;animation:zzz 1.8s ease-in-out infinite;}
+.crunchy-zzz:nth-child(2){animation-delay:.6s;font-size:.7rem;}
+.crunchy-zzz:nth-child(3){animation-delay:1.2s;font-size:.5rem;}
+/* speech bubble */
+.crunchy-speech{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--white);border:2.5px solid var(--green);border-radius:14px;padding:.5rem .8rem;font-size:.75rem;font-weight:800;color:var(--text);white-space:nowrap;box-shadow:var(--sh);display:none;z-index:10;}
+.crunchy-speech::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--green);}
+.crunchy-speech::before{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--white);z-index:1;}
+.crunchy-speech.show{display:block;animation:speech-pop .3s ease;}
+
+/* ===== NAV ===== */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2.5px solid var(--border);display:none;justify-content:space-around;padding:.6rem 0 calc(.6rem + env(safe-area-inset-bottom));z-index:400;box-shadow:0 -4px 20px rgba(0,120,60,.08);}
+.bnav.on{display:flex;}
+.nb{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:.4rem .8rem;border-radius:var(--rs);transition:all .18s;color:var(--dim);}
+.nb .ni{font-size:1.5rem;transition:transform .18s;}
+.nb .nl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+.nb.on{color:var(--green);}
+.nb.on .ni{transform:scale(1.25);}
+
+/* ===== HOME ===== */
+#sh{display:none;}
+#sh.active{display:block;}
+.hdr{background:linear-gradient(135deg,var(--leaf),#43A047,var(--green));border-radius:0 0 28px 28px;padding:1.5rem 1rem 2.4rem;position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:20px 20px;}
+.greet{font-size:.75rem;color:rgba(255,255,255,.8);font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.1rem;position:relative;}
+.pname{font-family:'Fredoka One',sans-serif;font-size:2.6rem;color:#fff;line-height:1;position:relative;}
+.wrap{padding:0 1rem 90px;max-width:480px;margin:0 auto;}
+.av-card{background:var(--white);border-radius:var(--rxl);padding:1.2rem;display:flex;align-items:flex-end;gap:1rem;margin:-1.2rem 1rem .9rem;box-shadow:var(--sh-lg);position:relative;z-index:2;border:2.5px solid #A5D6A7;}
+.av-info{flex:1;min-width:0;}
+.lv-badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--green);border-radius:100px;padding:.22rem .75rem;font-size:.74rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.45rem;}
+.xp-lbl{font-size:.68rem;color:var(--mid);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem;}
+.xp-track{height:20px;background:rgba(0,0,0,.08);border-radius:100px;overflow:visible;position:relative;border:1.5px solid rgba(0,0,0,.08);}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--green),#69F0AE,var(--green));background-size:200% auto;border-radius:100px;animation:shimmer 2.5s linear infinite;transition:width .8s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.xp-star{position:absolute;right:-13px;top:-9px;font-size:24px;animation:bounce 1.8s ease-in-out infinite;pointer-events:none;}
+.xp-nums{display:flex;justify-content:space-between;font-size:.63rem;color:var(--dim);font-weight:600;margin-top:.25rem;}
+.today-card{background:var(--white);border:2px solid #A5D6A7;border-radius:var(--rxl);padding:1.2rem;margin-bottom:.85rem;box-shadow:var(--sh);}
+.today-lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--green-b);margin-bottom:.6rem;}
+.today-row{display:flex;align-items:center;gap:.9rem;}
+.today-ico{width:54px;height:54px;border-radius:14px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;animation:wobble 3s ease-in-out infinite;}
+.today-info{flex:1;min-width:0;}
+.today-name{font-size:.95rem;font-weight:800;margin-bottom:.12rem;}
+.today-desc{font-size:.73rem;color:var(--dim);font-weight:700;}
+.today-xpbtn{background:var(--green);border:none;border-radius:100px;padding:.5rem 1.1rem;font-size:.8rem;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--green-b);transition:all .18s;font-family:'Nunito',sans-serif;white-space:nowrap;flex-shrink:0;}
+.today-xpbtn:hover{transform:translateY(-1px);}
+.today-xpbtn.done{background:transparent;color:var(--dim);cursor:default;font-size:1.3rem;box-shadow:none;}
+.sec{font-family:'Fredoka One',sans-serif;font-size:1.2rem;margin:.9rem 0 .5rem;}
+.streaks{display:flex;gap:.6rem;}
+.sk-pill{flex:1;background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:.75rem .5rem;text-align:center;box-shadow:var(--sh);}
+.sk-pill:nth-child(1){border-color:#FFCCBC;}
+.sk-pill:nth-child(2){border-color:#B2EBF2;}
+.sk-pill:nth-child(3){border-color:#C8E6C9;}
+.sk-e{font-size:1.4rem;}
+.sk-n{font-size:1.4rem;font-family:'Fredoka One',sans-serif;color:var(--orange);}
+.sk-pill:nth-child(2) .sk-n{color:var(--blue);}
+.sk-pill:nth-child(3) .sk-n{color:var(--green);}
+.sk-l{font-size:.57rem;color:var(--dim);font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+
+/* ===== CHALLENGES ===== */
+#sc{display:none;}
+#sc.active{display:block;}
+.phdr{padding:1.3rem 1rem .3rem;max-width:480px;margin:0 auto;}
+.ptitle{font-family:'Fredoka One',sans-serif;font-size:2.4rem;}
+.psub{color:var(--dim);font-size:.82rem;font-weight:700;}
+.ch-card{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:.65rem;display:flex;align-items:center;gap:.9rem;transition:all .18s;box-shadow:var(--sh);border-left-width:5px;}
+.ch-card:hover{transform:translateX(3px);}
+.ch-card.done{opacity:.5;background:var(--bg2);}
+.ch-card.lft-g{border-left-color:var(--green);}
+.ch-card.lft-o{border-left-color:var(--orange);}
+.ch-card.lft-b{border-left-color:var(--blue);}
+.ch-card.lft-y{border-left-color:var(--yellow);}
+.ch-card.lft-p{border-left-color:var(--purple);}
+.ch-card.lft-t{border-left-color:var(--teal);}
+.ch-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.ch-ico.g{background:var(--green-lt);}
+.ch-ico.o{background:var(--orange-lt);}
+.ch-ico.b{background:var(--blue-lt);}
+.ch-ico.y{background:var(--yellow-lt);}
+.ch-ico.p{background:var(--purple-lt);}
+.ch-ico.t{background:var(--teal-lt);}
+.ch-info{flex:1;min-width:0;}
+.ch-name{font-size:.9rem;font-weight:800;margin-bottom:.1rem;}
+.ch-desc{font-size:.71rem;color:var(--dim);font-weight:700;}
+.xpb{background:var(--green);border:none;border-radius:100px;padding:.38rem .9rem;font-size:.75rem;font-weight:800;color:#fff;white-space:nowrap;cursor:pointer;box-shadow:0 3px 0 var(--green-b);transition:all .18s;font-family:'Nunito',sans-serif;flex-shrink:0;}
+.xpb:hover{transform:translateY(-1px);}
+.xpb.done{background:transparent;color:var(--dim);cursor:default;font-size:1.2rem;box-shadow:none;}
+
+/* ===== SKILLS ===== */
+#sk{display:none;}
+#sk.active{display:block;}
+.stabs{display:flex;gap:.5rem;margin:.8rem 0;}
+.stab{flex:1;background:var(--white);border:2px solid var(--border);border-radius:var(--rs);padding:.65rem .3rem;cursor:pointer;font-family:'Fredoka One',sans-serif;font-size:.85rem;color:var(--dim);transition:all .18s;text-align:center;box-shadow:var(--sh);}
+.stab.on{background:var(--green-lt);border-color:var(--green);color:var(--green-b);}
+.sc-card{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:.7rem;box-shadow:var(--sh);border-left-width:5px;}
+.sc-card.stress{border-left-color:var(--pink);}
+.sc-card.resilience{border-left-color:var(--green);}
+.sc-card.assertive{border-left-color:var(--teal);}
+.sc-title{font-family:'Fredoka One',sans-serif;font-size:1.12rem;margin-bottom:.55rem;color:var(--text);}
+.sc-sit{border-radius:var(--rs);padding:.9rem;font-size:.88rem;font-weight:700;margin-bottom:.9rem;line-height:1.55;border-left:4px solid;}
+.sc-card.stress .sc-sit{background:var(--pink-lt);border-left-color:var(--pink);}
+.sc-card.resilience .sc-sit{background:var(--green-lt);border-left-color:var(--green);}
+.sc-card.assertive .sc-sit{background:var(--teal-lt);border-left-color:var(--teal);}
+.sc-opt{width:100%;background:var(--bg);border:2.5px solid var(--border);border-radius:var(--rs);padding:.8rem .9rem;text-align:left;color:var(--text);font-family:'Nunito',sans-serif;font-size:.87rem;font-weight:700;cursor:pointer;margin-bottom:.45rem;transition:all .18s;display:flex;align-items:center;gap:.6rem;}
+.sc-opt:hover:not(:disabled){border-color:var(--green);background:var(--green-lt);transform:translateX(3px);}
+.sc-opt .ol{width:27px;height:27px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.71rem;font-weight:800;flex-shrink:0;font-family:'Fredoka One',sans-serif;}
+.sc-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green-b);}
+.sc-opt.correct .ol{background:var(--green);border-color:var(--green);color:#fff;}
+.sc-opt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.sc-opt.wrong .ol{background:var(--red);border-color:var(--red);color:#fff;}
+.sc-opt:disabled{cursor:default;transform:none!important;}
+.sc-fb{border-radius:var(--rs);padding:.75rem .9rem;font-size:.84rem;font-weight:700;display:none;margin-top:.3rem;line-height:1.55;}
+.sc-fb.good{background:var(--green-lt);border:2px solid var(--green);color:var(--green-b);}
+.sc-fb.bad{background:var(--red-lt);border:2px solid var(--red);color:var(--red);}
+.sc-fb.show{display:block;animation:up .3s ease;}
+
+/* ===== FREE RESPONSE ===== */
+.free-wrap{margin-top:.2rem;}
+.free-prompt{font-size:.8rem;font-weight:800;color:var(--green-b);margin-bottom:.4rem;}
+.free-textarea{width:100%;background:var(--bg);border:2.5px solid var(--border);border-radius:var(--rs);padding:.8rem 1rem;color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;resize:vertical;min-height:80px;transition:border-color .2s;}
+.free-textarea:focus{border-color:var(--green);}
+.free-textarea:disabled{opacity:.6;}
+.free-submit{background:var(--green);border:none;border-radius:var(--rs);padding:.65rem 1.3rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.05rem;cursor:pointer;box-shadow:0 3px 0 var(--green-b);margin-top:.5rem;transition:all .2s;}
+.free-submit:hover{transform:translateY(-1px);}
+.free-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.free-loading{font-size:.83rem;font-weight:700;color:var(--dim);margin-top:.5rem;display:none;}
+.free-loading.show{display:block;animation:up .3s ease;}
+.free-result{border-radius:var(--rs);padding:.75rem .9rem;font-size:.84rem;font-weight:700;display:none;margin-top:.5rem;line-height:1.55;background:var(--green-lt);border:2px solid var(--green);color:var(--green-b);}
+.free-result.show{display:block;animation:up .3s ease;}
+.api-note{font-size:.72rem;font-weight:700;color:var(--dim);margin-top:.35rem;line-height:1.4;}
+
+/* ===== LEADERBOARD ===== */
+#slb{display:none;}
+#slb.active{display:block;}
+.lbtabs{display:flex;gap:.5rem;margin:.8rem 0;}
+.ltab{flex:1;background:var(--white);border:2px solid var(--border);border-radius:var(--rs);padding:.5rem;cursor:pointer;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);transition:all .18s;font-family:'Nunito',sans-serif;text-align:center;box-shadow:var(--sh);}
+.ltab.on{background:var(--blue-lt);border-color:var(--blue);color:var(--blue-b);}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:.6rem;padding:1rem 0 .5rem;}
+.pod{flex:1;max-width:115px;text-align:center;}
+.pod-av{width:50px;height:50px;border-radius:50%;margin:0 auto .4rem;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:var(--bg2);border:2px solid var(--border);}
+.pod.p1 .pod-av{width:65px;height:65px;font-size:1.8rem;border:3px solid var(--yellow);background:var(--yellow-lt);box-shadow:0 0 0 4px rgba(255,214,0,.2);animation:bounce 2s ease-in-out infinite;}
+.pod-name{font-size:.7rem;font-weight:800;line-height:1.3;}
+.pod-xp{font-size:.6rem;color:var(--dim);font-weight:700;}
+.pod-blk{border-radius:var(--rs) var(--rs) 0 0;margin-top:.4rem;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',sans-serif;font-size:1.5rem;}
+.lb-row{display:flex;align-items:center;gap:.85rem;background:var(--white);border:2px solid var(--border);border-radius:var(--rs);padding:.85rem .9rem;margin-bottom:.4rem;box-shadow:var(--sh);}
+.lb-row.you{border-color:var(--green);background:var(--green-lt);}
+.lb-rank{font-family:'Fredoka One',sans-serif;font-size:1.2rem;color:var(--dim);width:22px;text-align:center;}
+.lb-av{font-size:1.4rem;}
+.lb-nm{flex:1;font-weight:800;font-size:.9rem;}
+.lb-xp{font-size:.78rem;font-weight:800;color:var(--green-b);background:var(--green-lt);padding:.2rem .65rem;border-radius:100px;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-130px);background:var(--white);border:3px solid var(--green);border-radius:var(--r);padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;box-shadow:0 8px 32px rgba(0,200,83,.25);z-index:2000;transition:transform .45s cubic-bezier(.34,1.56,.64,1);max-width:320px;width:calc(100% - 2rem);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.t-ico{font-size:1.8rem;flex-shrink:0;}
+.t-title{font-family:'Fredoka One',sans-serif;font-size:1.15rem;color:var(--text);}
+.t-sub{font-size:.76rem;color:var(--mid);font-weight:700;}
+
+/* ===== LEVEL UP ===== */
+.lv-ov{position:fixed;inset:0;background:rgba(244,255,246,.92);backdrop-filter:blur(6px);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;}
+.lv-ov.show{display:flex;animation:up .3s ease;}
+.lv-card{background:var(--white);border:3px solid var(--yellow);border-radius:var(--rxl);padding:2.4rem;text-align:center;max-width:300px;width:calc(100% - 2rem);box-shadow:0 0 0 8px rgba(255,214,0,.18),var(--sh-lg);animation:pop .4s ease;}
+.lv-card .li{font-size:3.8rem;display:block;animation:bup 1s ease-in-out infinite;margin-bottom:.65rem;}
+.lv-card .ltag{font-size:.8rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;}
+.lv-card .ln{font-family:'Fredoka One',sans-serif;font-size:5.5rem;color:var(--yellow-b);line-height:1;}
+.lv-card p{color:var(--mid);font-size:.87rem;font-weight:700;margin:1rem 0 1.4rem;line-height:1.6;}
+.lv-btn{background:var(--yellow);border:none;border-radius:var(--rs);padding:.85rem 2.5rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.25rem;cursor:pointer;box-shadow:0 4px 0 var(--yellow-b);transition:all .2s;}
+.lv-btn:hover{transform:translateY(-2px);}
+
+/* ===== RESILIENCE MODAL ===== */
+.rs-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:3500;display:none;align-items:center;justify-content:center;padding:1rem;}
+.rs-ov.show{display:flex;}
+.rs-card{background:var(--white);border-radius:var(--rxl);padding:1.8rem;max-width:340px;width:100%;box-shadow:var(--sh-lg);border:3px solid var(--orange);animation:pop .4s ease;}
+.rs-card h3{font-family:'Fredoka One',sans-serif;font-size:1.8rem;color:var(--orange-b);margin-bottom:.4rem;}
+.rs-sub{font-size:.84rem;font-weight:700;color:var(--mid);margin-bottom:.9rem;line-height:1.55;}
+.rs-q{background:var(--orange-lt);border-left:4px solid var(--orange);border-radius:0 var(--rs) var(--rs) 0;padding:.85rem 1rem;font-size:.88rem;font-weight:700;margin-bottom:.9rem;line-height:1.55;}
+.rs-opt{width:100%;background:var(--bg);border:2px solid var(--border);border-radius:var(--rs);padding:.75rem .9rem;text-align:left;color:var(--text);font-family:'Nunito',sans-serif;font-size:.87rem;font-weight:700;cursor:pointer;margin-bottom:.45rem;transition:all .18s;display:flex;align-items:center;gap:.6rem;}
+.rs-opt:hover:not(:disabled){border-color:var(--green);background:var(--green-lt);}
+.rs-opt .rl{width:25px;height:25px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.71rem;font-weight:800;flex-shrink:0;font-family:'Fredoka One',sans-serif;}
+.rs-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green-b);}
+.rs-opt.correct .rl{background:var(--green);border-color:var(--green);color:#fff;}
+.rs-opt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.rs-opt.wrong .rl{background:var(--red);border-color:var(--red);color:#fff;}
+.rs-opt:disabled{cursor:default;}
+.rs-fb{display:none;border-radius:var(--rs);padding:.75rem .9rem;font-size:.84rem;font-weight:700;margin-top:.35rem;line-height:1.55;}
+.rs-fb.show{display:block;animation:up .3s ease;}
+.rs-fb.good{background:var(--green-lt);border:2px solid var(--green);color:var(--green-b);}
+.rs-fb.bad{background:var(--orange-lt);border:2px solid var(--orange);color:var(--orange-b);}
+.rs-close{width:100%;background:var(--green);border:none;border-radius:var(--rs);padding:.85rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1.15rem;cursor:pointer;box-shadow:0 4px 0 var(--green-b);transition:all .2s;margin-top:.8rem;display:none;}
+.rs-close:hover{transform:translateY(-2px);}
+.rs-close.show{display:block;}
+
+/* ===== TOUR ===== */
+.tour-ov{position:fixed;inset:0;z-index:4500;display:none;pointer-events:all;}
+.tour-ov.show{display:block;}
+.tour-beacon{position:fixed;border-radius:14px;pointer-events:none;z-index:4501;border:3px solid var(--yellow);background:transparent;animation:bpulse 1.5s ease-in-out infinite;}
+.tour-bubble{position:fixed;z-index:4502;background:var(--white);border-radius:var(--rxl);padding:1.1rem 1.2rem;width:260px;box-shadow:var(--sh-lg);border:2px solid var(--yellow);}
+.tour-bubble .tb-tag{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--yellow-b);margin-bottom:.35rem;}
+.tour-bubble .tb-title{font-family:'Fredoka One',sans-serif;font-size:1.2rem;margin-bottom:.3rem;}
+.tour-bubble .tb-txt{font-size:.83rem;font-weight:700;color:var(--mid);line-height:1.55;margin-bottom:.75rem;}
+.tour-bubble .tb-btn{background:var(--yellow);border:none;border-radius:var(--rs);padding:.58rem 1.2rem;color:#fff;font-family:'Fredoka One',sans-serif;font-size:1rem;cursor:pointer;box-shadow:0 3px 0 var(--yellow-b);transition:all .2s;}
+.tour-bubble .tb-btn:hover{transform:translateY(-1px);}
+
+/* ===== CONFETTI + XP BURST ===== */
+.cf{position:fixed;border-radius:2px;animation:fall linear forwards;pointer-events:none;z-index:9999;}
+.xp-burst{position:fixed;pointer-events:none;font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:var(--green);z-index:9998;animation:star-trail .9s ease forwards;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.14);}
+
+/* ===== MUTE BTN ===== */
+.mute-btn{position:fixed;bottom:calc(68px + env(safe-area-inset-bottom));right:12px;width:36px;height:36px;border-radius:50%;background:var(--white);border:2px solid var(--border);box-shadow:var(--sh);cursor:pointer;font-size:1.1rem;display:none;align-items:center;justify-content:center;z-index:500;transition:all .18s;}
+.mute-btn.on{display:flex;}
+.mute-btn:hover{transform:scale(1.1);}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="sw" class="screen active">
+  <!-- Floating food emojis -->
+  <div class="w-floaties" aria-hidden="true">
+    <span class="floatie" style="left:5%;top:8%;animation-duration:4.2s;animation-delay:0s">🥕</span>
+    <span class="floatie" style="left:85%;top:12%;animation-duration:5.1s;animation-delay:.5s">🍎</span>
+    <span class="floatie" style="left:15%;top:55%;animation-duration:4.8s;animation-delay:1.2s">🥦</span>
+    <span class="floatie" style="left:78%;top:42%;animation-duration:3.9s;animation-delay:.8s">🍊</span>
+    <span class="floatie" style="left:45%;top:5%;animation-duration:5.5s;animation-delay:.3s">🫐</span>
+    <span class="floatie" style="left:92%;top:72%;animation-duration:4.4s;animation-delay:1.5s">🥝</span>
+    <span class="floatie" style="left:3%;top:80%;animation-duration:5.0s;animation-delay:.9s">🍇</span>
+    <span class="floatie" style="left:60%;top:80%;animation-duration:4.1s;animation-delay:.2s">🥑</span>
+    <span class="floatie" style="left:30%;top:70%;animation-duration:4.7s;animation-delay:1.8s">🍓</span>
+  </div>
+
+  <div class="w-hero">
+    <!-- Crunchy mascot -->
+    <div class="w-crunchy" aria-label="Crunchy mascot">
+      <div class="wc-leaves">
+        <div class="wc-leaf"></div>
+        <div class="wc-leaf"></div>
+        <div class="wc-leaf"></div>
+        <div class="wc-leaf"></div>
+      </div>
+      <div class="wc-body">
+        <div class="wc-eyes">
+          <div class="wc-eye"></div>
+          <div class="wc-eye"></div>
+        </div>
+        <div class="wc-mouth"></div>
+        <div class="wc-blush left"></div>
+        <div class="wc-blush right"></div>
+      </div>
+      <div class="wc-name">Crunchy!</div>
+      <div class="wc-tag">Crunch&Sip® WA Mascot 2025</div>
+    </div>
+
+    <div class="logo-t">PlayFit</div>
+    <div class="logo-s">Beat obesity. Outsmart diabetes. Level up your life.</div>
+  </div>
+
+  <div class="wcard">
+    <h2>Make your profile!</h2>
+    <p>Earn XP for every healthy choice. Fruit, veggies, water, movement - it all counts.</p>
+    <label class="lbl">Your name</label>
+    <input id="name-inp" class="field" type="text" placeholder="e.g. Alex, Sam..." maxlength="20">
+    <label class="lbl">Pick your avatar</label>
+    <div class="av-row">
+      <button class="avb sel" onclick="pickAv(this,'🥕')">🥕</button>
+      <button class="avb" onclick="pickAv(this,'🍎')">🍎</button>
+      <button class="avb" onclick="pickAv(this,'🤸')">🤸</button>
+      <button class="avb" onclick="pickAv(this,'🚴')">🚴</button>
+      <button class="avb" onclick="pickAv(this,'⚽')">⚽</button>
+    </div>
+    <button class="gbtn" onclick="goTutorial()">Let's Go! 🚀</button>
+  </div>
+</div>
+
+<!-- TUTORIAL -->
+<div id="st" class="screen">
+  <div class="tbar">
+    <div class="tbar-logo">PlayFit x Crunch&Sip</div>
+    <div class="dots" id="tdots"></div>
+  </div>
+  <div id="tslide"></div>
+  <div class="tnav" style="max-width:440px;width:100%;">
+    <button class="tbk" id="tbk" onclick="tutNav(-1)">Back</button>
+    <button class="tnx locked" id="tnx" onclick="tutNav(1)">Next</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="bnav" id="bnav">
+  <button class="nb on" id="nb-home" onclick="go('home')"><span class="ni">🏠</span><span class="nl">Home</span></button>
+  <button class="nb" id="nb-challenges" onclick="go('challenges')"><span class="ni">⚡</span><span class="nl">Tasks</span></button>
+  <button class="nb" id="nb-skills" onclick="go('skills')"><span class="ni">🧠</span><span class="nl">Skills</span></button>
+  <button class="nb" id="nb-leaderboard" onclick="go('leaderboard')"><span class="ni">🏆</span><span class="nl">Board</span></button>
+</nav>
+
+<!-- MUTE BUTTON -->
+<button class="mute-btn" id="mute-btn" onclick="toggleMute()" title="Toggle sounds">🔊</button>
+
+<!-- HOME -->
+<div id="sh" class="screen">
+  <div class="hdr">
+    <div class="greet">Welcome back,</div>
+    <div class="pname" id="h-name">Player</div>
+  </div>
+  <div class="wrap" style="padding-top:0">
+    <div class="av-card">
+      <!-- CRUNCHY MASCOT -->
+      <div class="crunchy-wrap" id="crunchy-wrap">
+        <div class="crunchy-leaves">
+          <div class="crunchy-leaf"></div>
+          <div class="crunchy-leaf"></div>
+          <div class="crunchy-leaf"></div>
+          <div class="crunchy-leaf"></div>
+        </div>
+        <div class="crunchy-body happy" id="crunchy-body" onclick="crunchyTap()">
+          <div class="crunchy-eyes">
+            <div class="crunchy-eye"></div>
+            <div class="crunchy-eye"></div>
+          </div>
+          <div class="crunchy-mouth"></div>
+          <div class="crunchy-blush left"></div>
+          <div class="crunchy-blush right"></div>
+        </div>
+        <div class="crunchy-speech" id="crunchy-speech"></div>
+      </div>
+      <div class="av-info">
+        <div class="lv-badge">⚡ Level <span id="h-lv">1</span></div>
+        <div class="xp-lbl">XP - <span id="h-xp">0</span> / <span id="h-xpn">300</span></div>
+        <div class="xp-track">
+          <div class="xp-fill" id="xp-fill" style="width:0%">
+            <div class="xp-star">🌟</div>
+          </div>
+        </div>
+        <div class="xp-nums"><span>0</span><span id="xp-left">300 to go</span></div>
+      </div>
+    </div>
+    <div style="height:.8rem"></div>
+    <div class="today-card" id="today-card"></div>
+    <div class="sec">🔥 Streaks</div>
+    <div class="streaks">
+      <div class="sk-pill"><div class="sk-e">🍎</div><div class="sk-n" id="s-fruit">0</div><div class="sk-l">Fruit</div></div>
+      <div class="sk-pill"><div class="sk-e">💧</div><div class="sk-n" id="s-water">0</div><div class="sk-l">Water</div></div>
+      <div class="sk-pill"><div class="sk-e">🏃</div><div class="sk-n" id="s-move">0</div><div class="sk-l">Move</div></div>
+    </div>
+    <div style="height:.5rem"></div>
+  </div>
+</div>
+
+<!-- CHALLENGES -->
+<div id="sc" class="screen">
+  <div class="phdr"><div class="ptitle">Daily Tasks</div><div class="psub">Eat well, move more, earn XP!</div></div>
+  <div class="wrap"><div style="margin-top:.8rem" id="ch-list"></div></div>
+</div>
+
+<!-- SKILLS -->
+<div id="sk" class="screen">
+  <div class="phdr"><div class="ptitle">Skill Missions</div><div class="psub">Put what you learned into practice</div></div>
+  <div class="wrap">
+    <div class="stabs">
+      <button class="stab on" onclick="skillTab('stress',this)">😤 Stress</button>
+      <button class="stab" onclick="skillTab('resilience',this)">🛡 Bounce Back</button>
+      <button class="stab" onclick="skillTab('assertive',this)">💬 Stand Up</button>
+    </div>
+    <div id="skill-cnt"></div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="slb" class="screen">
+  <div class="phdr"><div class="ptitle">Leaderboard</div><div class="psub">See where you rank</div></div>
+  <div class="wrap">
+    <div class="lbtabs">
+      <button class="ltab on" data-tab="friends" onclick="lbTab('friends',this)">Friends</button>
+      <button class="ltab" data-tab="local" onclick="lbTab('local',this)">Local</button>
+      <button class="ltab" data-tab="global" onclick="lbTab('global',this)">Global</button>
+    </div>
+    <div id="lb-cnt"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="t-ico" id="t-ico">✅</div>
+  <div><div class="t-title" id="t-title">Done!</div><div class="t-sub" id="t-sub">+50 XP</div></div>
+</div>
+
+<!-- LEVEL UP -->
+<div class="lv-ov" id="lv-ov">
+  <div class="lv-card">
+    <span class="li">🎉</span>
+    <div class="ltag">Level Up!</div>
+    <div class="ln" id="lv-num">2</div>
+    <p>Every healthy choice builds habits that protect you for life. Crunchy is so proud of you!</p>
+    <button class="lv-btn" onclick="closeLv()">Keep Going! 💪</button>
+  </div>
+</div>
+
+<!-- RESILIENCE MODAL -->
+<div class="rs-ov" id="rs-ov">
+  <div class="rs-card">
+    <h3>🔥 Streak Alert!</h3>
+    <div class="rs-sub">You missed a couple of days. Resilience is not about being perfect. It is about choosing to get back up. Answer this and save half your streak!</div>
+    <div class="rs-q" id="rs-q"></div>
+    <div id="rs-opts"></div>
+    <div class="rs-fb" id="rs-fb"></div>
+    <button class="rs-close" id="rs-close" onclick="closeResilience()">Back to it! 💪</button>
+  </div>
+</div>
+
+<!-- TOUR -->
+<div class="tour-ov" id="tour-ov"></div>
+<div class="tour-beacon" id="tour-beacon" style="display:none"></div>
+<div class="tour-bubble" id="tour-bubble" style="display:none"></div>
+
+<script>
+/* ==================== SOUND ENGINE ==================== */
+let audioCtx = null;
+let muted = false;
+
+function getCtx() {
+  if (audioCtx) return audioCtx;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return null;
+  try { audioCtx = new AC(); } catch(e) { audioCtx = null; }
+  return audioCtx;
+}
+
+function unlockAudio() {
+  const ctx = getCtx();
+  if (!ctx) return;
+  if (ctx.state !== 'running') ctx.resume().catch(() => {});
+}
+
+/* KEY FIX: beep() now resumes context before playing instead of bailing out */
+function beep(freq, dur, type='sine', vol=0.18, when=0) {
+  if (muted) return;
+  const ctx = getCtx();
+  if (!ctx) return;
+  const play = () => {
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + when);
+      gain.gain.setValueAtTime(vol, ctx.currentTime + when);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + when + dur);
+      osc.start(ctx.currentTime + when);
+      osc.stop(ctx.currentTime + when + dur + 0.05);
+    } catch(e) {}
+  };
+  if (ctx.state === 'running') {
+    play();
+  } else {
+    ctx.resume().then(play).catch(() => {});
+  }
+}
+
+const SND = {
+  click() { beep(880, .06, 'square', .07); },
+  xp() {
+    beep(523, .12, 'square', .14, 0);
+    beep(659, .12, 'square', .14, .1);
+    beep(784, .18, 'square', .14, .2);
+  },
+  correct() {
+    beep(523, .1, 'triangle', .18, 0);
+    beep(659, .1, 'triangle', .18, .08);
+    beep(784, .1, 'triangle', .18, .16);
+    beep(1047, .22, 'triangle', .18, .24);
+  },
+  wrong() {
+    beep(300, .08, 'sawtooth', .12, 0);
+    beep(220, .18, 'sawtooth', .10, .1);
+  },
+  levelup() {
+    [523,659,784,1047,1319].forEach((f,i) => beep(f, .15, 'square', .16, i*.12));
+    setTimeout(() => beep(1047, .4, 'triangle', .2), 700);
+  },
+  badge() {
+    [1047,1319,1568].forEach((f,i) => beep(f, .1, 'triangle', .14, i*.08));
+  },
+  tap() { beep(660, .05, 'sine', .07); },
+  flip() { beep(750, .08, 'triangle', .1); },
+  breathin() { beep(330, .5, 'sine', .07); },
+  breathout() { beep(220, .5, 'sine', .07); }
+};
+
+function toggleMute() {
+  muted = !muted;
+  document.getElementById('mute-btn').textContent = muted ? '🔇' : '🔊';
+  if (!muted) unlockAudio();
+}
+
+/* Unlock on any interaction */
+['pointerdown','touchstart','click','keydown'].forEach(evt =>
+  document.addEventListener(evt, unlockAudio, { passive: true })
+);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') unlockAudio();
+});
+
+/* ==================== STATE ==================== */
+const S = {
+  name: 'Player', avatar: '🥕', level: 1, xp: 0,
+  thresholds: [0,300,700,1300,2100,3200,4600,6200,8100,10300,13000],
+  done: new Set(), doneS: new Set(), badges: new Set(),
+  streaks: { fruit:0, water:0, move:0 }
+};
+
+/* ==================== CRUNCHY MASCOT ==================== */
+const CRUNCHY_IDLE = [
+  'Crunch and sip your way to health!',
+  'Fruit today keeps the doctor away!',
+  'Tap me for some veggie wisdom!',
+  'Your choices today shape tomorrow!',
+  'Water beats soft drink every time!',
+  'Move your body and beat diabetes!',
+  'Crunchy believes in you!',
+];
+const CRUNCHY_TASK = [
+  'CRUNCH! XP GET!',
+  'You are on fire!',
+  'Healthy choice unlocked!',
+  'Keep it going champ!',
+  'BOOM! Diabetes does not stand a chance!',
+];
+const CRUNCHY_CORRECT = [
+  'NAILED IT!',
+  'Big brain energy!',
+  'You knew that one!',
+  'Absolutely correct!',
+];
+const CRUNCHY_WRONG = [
+  'Almost! You have got this.',
+  'Give it another go!',
+  'Not quite, but you are learning!',
+];
+const CRUNCHY_LEVEL = [
+  'LETS GOOOO!!',
+  'You are unstoppable!',
+  'Level up! Crunchy is so proud!',
+];
+
+let crunchySpeechTimer = null;
+let crunchyIdleTimer = null;
+let crunchyAsleep = false;
+
+function crunchySay(msg, face='excited', duration=3000) {
+  const body = document.getElementById('crunchy-body');
+  const speech = document.getElementById('crunchy-speech');
+  if (!body || !speech) return;
+  clearTimeout(crunchySpeechTimer);
+  crunchyAsleep = false;
+  body.className = 'crunchy-body ' + face;
+  speech.textContent = msg;
+  speech.classList.add('show');
+  crunchySpeechTimer = setTimeout(() => {
+    speech.classList.remove('show');
+    body.className = 'crunchy-body happy';
+    resetCrunchyIdleTimer();
+  }, duration);
+}
+
+function crunchyTap() {
+  SND.tap();
+  const msg = CRUNCHY_IDLE[Math.floor(Math.random() * CRUNCHY_IDLE.length)];
+  crunchySay(msg, 'excited', 2500);
+}
+
+function resetCrunchyIdleTimer() {
+  clearTimeout(crunchyIdleTimer);
+  crunchyIdleTimer = setTimeout(() => {
+    crunchyAsleep = true;
+    const body = document.getElementById('crunchy-body');
+    if (body) body.className = 'crunchy-body sleep';
+  }, 20000);
+}
+
+function crunchyWakeUp(face='happy') {
+  if (!crunchyAsleep) return;
+  crunchyAsleep = false;
+  const body = document.getElementById('crunchy-body');
+  if (body) body.className = 'crunchy-body ' + face;
+  resetCrunchyIdleTimer();
+}
+
+/* ==================== WELCOME ==================== */
+function pickAv(el, e) {
+  SND.click();
+  document.querySelectorAll('.avb').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  S.avatar = e;
+}
+
+function goTutorial() {
+  const n = document.getElementById('name-inp').value.trim();
+  if (!n) {
+    const f = document.getElementById('name-inp');
+    f.style.borderColor = 'var(--red)';
+    f.focus();
+    setTimeout(() => f.style.borderColor = '', 1600);
+    return;
+  }
+  SND.click();
+  S.name = n;
+  tutStep = 0;
+  switchScreen('st');
+  renderSlide();
+}
+
+/* ==================== TUTORIAL ==================== */
+let tutStep = 0, slideReady = false, breathTimeout = null, breathRunning = false;
+
+const SLIDES = [
+  {
+    tag:'g', tagTxt:'Welcome', hero:'🥕', title:'Hey! Welcome to PlayFit.',
+    body:'PlayFit rewards you for real healthy choices every day. Eat fruit, drink water, go for a walk and you earn XP to level up your character.\n\nThis app is powered by Crunchy, the new mascot for WA\'s Crunch&Sip® program. Together you will build habits that protect you from obesity and type 2 diabetes for life.',
+    type:'info'
+  },
+  {
+    tag:'pk', tagTxt:'Stress and Your Body', hero:'😤', title:'How stress makes you gain weight',
+    body:'When you stress out, your body releases a hormone called cortisol. It is meant to help in danger, but when it sticks around too long it creates a chain reaction that directly drives weight gain and raises your risk of type 2 diabetes.',
+    type:'stressdiagram'
+  },
+  {
+    tag:'o', tagTxt:'Food and Blood Sugar', hero:'🍽', title:'What happens inside after you eat?',
+    body:'Some foods spike your blood sugar fast then crash it hard. When those spikes happen over and over, your body struggles to manage insulin properly. That is how type 2 diabetes starts. Tap the foods that keep your blood sugar stable!',
+    type:'foodsort'
+  },
+  {
+    tag:'b', tagTxt:'Getting Active', hero:'🏃', title:'Why moving is your diabetes shield',
+    body:'Every time your muscles move, they burn sugar from your blood directly without needing insulin. Even 20 minutes of movement improves how your body handles blood sugar for hours. Tap each card to flip it!',
+    type:'flipcards'
+  },
+  {
+    tag:'t', tagTxt:'Stress Management', hero:'😮', title:'Breathing exercises drops cortisol fast',
+    body:'Breathing slowly switches on your parasympathetic nervous system. This drops cortisol within minutes, which directly reduces junk food cravings and helps your body manage blood sugar better. Try it now.',
+    type:'breathing'
+  },
+  {
+    tag:'p', tagTxt:'Resilience', hero:'🛡', title:'Getting back up is the whole game',
+    body:'Type 2 diabetes is 80% preventable with consistent healthy habits. Nobody is perfect. What matters is choosing to try again. Resilience is what separates lasting health from a week-long attempt.',
+    type:'scenario',
+    sit:'You have missed your healthy eating goal three days in a row and feel like just giving up on it.',
+    opts:['Give up, it clearly is not working','Accept the slip and start fresh tomorrow','Wait until you feel more motivated'],
+    correct:1,
+    ok:'That is resilience. Missing days is completely normal. Choosing to restart is what builds the habits that prevent obesity long term.',
+    bad:'Waiting for motivation is a trap. It usually shows up after you start, not before. Starting again today is always the right move.'
+  },
+  {
+    tag:'y', tagTxt:'Assertiveness', hero:'💬', title:'Saying no protects your health',
+    body:'Sugary drinks are one of the top causes of type 2 diabetes in young Australians. Being assertive with friends around food choices is a real health skill, not just a social one. Pick the best response.',
+    type:'scenario',
+    sit:'Your friend says "skip training, come get a large frozen Coke and chips with us." You know sugary drinks spike your blood sugar hard.',
+    opts:['Agree and skip training','Say nothing and feel bad later','Say "I am heading to training but let\'s get something after!"'],
+    correct:2,
+    ok:'You kept your goal and kept the friendship. Cutting out sugary drinks is one of the single biggest things you can do to cut your diabetes risk.',
+    bad:'There is usually a middle ground. You can protect your health and keep your friends. Suggesting an alternative is a great skill.'
+  },
+  {
+    tag:'g', tagTxt:'Ready!', hero:'🎮', title:'Time to play!',
+    body:'You know why healthy habits matter now. Type 2 diabetes and obesity are largely preventable and it starts with the daily choices you make.\n\nComplete daily tasks to earn XP. Try Skill Missions to practice what you just learned. Build streaks and climb the leaderboard.\n\nCrunchy is cheering you on every step!',
+    type:'done'
+  }
+];
+
+function unlockNext() {
+  slideReady = true;
+  const btn = document.getElementById('tnx');
+  btn.classList.remove('locked');
+}
+
+function renderDots() {
+  document.getElementById('tdots').innerHTML = SLIDES.map((_,i) =>
+    `<div class="dot${i===tutStep?' on':i<tutStep?' done':''}"></div>`).join('');
+}
+
+function renderSlide() {
+  const s = SLIDES[tutStep];
+  slideReady = (s.type==='info' || s.type==='done');
+  const btn = document.getElementById('tnx');
+  btn.classList.toggle('locked', !slideReady);
+  const isLast = tutStep === SLIDES.length - 1;
+  btn.textContent = isLast ? 'Start Playing! 🎮' : 'Next';
+  btn.className = (isLast ? 'tnx go' : 'tnx') + (slideReady ? '' : ' locked');
+  document.getElementById('tbk').style.display = tutStep === 0 ? 'none' : 'block';
+  renderDots();
+  const bodyHtml = (s.body || '').replace(/\n/g, '<br><br>');
+  const wrap = document.getElementById('tslide');
+  wrap.innerHTML = `
+    <div class="scard">
+      <div class="stag ${s.tag}">${s.tagTxt}</div>
+      <span class="shero">${s.hero}</span>
+      <h2 class="stitle">${s.title}</h2>
+      <p class="sbody">${bodyHtml}</p>
+      ${buildSlideExtra(s)}
+    </div>`;
+  wrap.style.animation='none'; wrap.offsetHeight; wrap.style.animation='up .3s ease';
+  initSlideExtra(s);
+  document.getElementById('st').scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+function buildSlideExtra(s) {
+  if (s.type==='stressdiagram') return buildStressDiagram();
+  if (s.type==='foodsort') return buildFoodSort();
+  if (s.type==='flipcards') return buildFlipCards();
+  if (s.type==='breathing') return buildBreathing();
+  if (s.type==='scenario') return buildScenario(s);
+  return '';
+}
+function initSlideExtra(s) {
+  if (s.type==='flipcards') initFlipCards();
+  if (s.type==='breathing') breathRunning = false;
+}
+function tutNav(dir) {
+  if (dir===1 && !slideReady) return;
+  if (dir===1 && tutStep===SLIDES.length-1) { startTour(); return; }
+  SND.click();
+  tutStep = Math.max(0, Math.min(SLIDES.length-1, tutStep+dir));
+  foodPicked = new Set();
+  if (breathTimeout) { clearTimeout(breathTimeout); breathTimeout = null; }
+  breathRunning = false;
+  renderSlide();
+}
+
+/* ---- STRESS DIAGRAM ---- */
+function buildStressDiagram() {
+  return `
+    <div style="margin:1rem 0;text-align:center;">
+      <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;width:100%;">
+        <circle cx="65" cy="55" r="46" fill="#FFE0EC" stroke="#FF4081" stroke-width="2.5"/>
+        <text x="65" y="42" text-anchor="middle" font-size="26">😤</text>
+        <text x="65" y="72" text-anchor="middle" font-size="9" font-weight="800" fill="#C2003C" font-family="Nunito,sans-serif">STRESSED</text>
+        <text x="65" y="86" text-anchor="middle" font-size="7" font-weight="700" fill="#94a3b8" font-family="Nunito,sans-serif">cortisol spikes</text>
+        <text x="150" y="36" text-anchor="middle" font-size="7" font-weight="800" fill="#94a3b8" font-family="Nunito,sans-serif">deep breathing</text>
+        <text x="150" y="46" text-anchor="middle" font-size="7" font-weight="800" fill="#94a3b8" font-family="Nunito,sans-serif">or exercise</text>
+        <line x1="118" y1="55" x2="178" y2="55" stroke="#B2EBF2" stroke-width="2" stroke-dasharray="4 3"/>
+        <polygon points="178,50 190,55 178,60" fill="#B2EBF2"/>
+        <circle cx="235" cy="55" r="46" fill="#CCFFE7" stroke="#00C853" stroke-width="2.5"/>
+        <text x="235" y="42" text-anchor="middle" font-size="26">😌</text>
+        <text x="235" y="72" text-anchor="middle" font-size="9" font-weight="800" fill="#00913D" font-family="Nunito,sans-serif">CALM</text>
+        <text x="235" y="86" text-anchor="middle" font-size="7" font-weight="700" fill="#94a3b8" font-family="Nunito,sans-serif">cortisol drops</text>
+      </svg>
+      <div class="chain">
+        <span class="chain-item">Stress</span><span class="chain-arrow">-></span>
+        <span class="chain-item">Cortisol</span><span class="chain-arrow">-></span>
+        <span class="chain-item">Sugar cravings</span><span class="chain-arrow">-></span>
+        <span class="chain-item">Fat storage</span><span class="chain-arrow">-></span>
+        <span class="chain-item">Diabetes risk</span>
+      </div>
+      <p style="font-size:.78rem;color:var(--mid);font-weight:700;margin-top:.8rem;line-height:1.55;">Breaking this chain is one of the most powerful health skills you can have. You will practise it on the next slides.</p>
+    </div>
+    <button class="check-btn" onclick="SND.click();unlockNext();tutNav(1);" style="margin-top:.5rem;">Got it, show me how!</button>`;
+}
+
+/* ---- FOOD SORT ---- */
+const FOODS = [
+  {e:'🍎',n:'Apple',healthy:true},
+  {e:'🍟',n:'Chips',healthy:false},
+  {e:'🥕',n:'Carrot',healthy:true},
+  {e:'🥤',n:'Soft Drink',healthy:false},
+  {e:'💧',n:'Water',healthy:true},
+  {e:'🍔',n:'Burger',healthy:false},
+];
+let foodPicked = new Set();
+
+function buildFoodSort() {
+  const items = FOODS.map((f,i) => `
+    <div class="food-item" id="fi-${i}" onclick="toggleFood(${i})">
+      <span class="fi-e">${f.e}</span><span class="fi-n">${f.n}</span>
+    </div>`).join('');
+  return `
+    <p style="font-size:.8rem;font-weight:800;color:var(--mid);margin:.6rem 0 .2rem;">Tap the blood-sugar-friendly ones:</p>
+    <div class="food-grid">${items}</div>
+    <button class="check-btn" id="food-check" onclick="checkFood()">Check my picks!</button>
+    <div class="food-fb" id="food-fb"></div>`;
+}
+
+function toggleFood(i) {
+  SND.tap();
+  const el = document.getElementById('fi-'+i);
+  if (el.classList.contains('correct')||el.classList.contains('wrong')||el.classList.contains('missed')) return;
+  if (foodPicked.has(i)) { foodPicked.delete(i); el.classList.remove('picked'); }
+  else { foodPicked.add(i); el.classList.add('picked'); }
+}
+
+function checkFood() {
+  SND.click();
+  let correct=0, total=0;
+  FOODS.forEach((f,i) => {
+    const el = document.getElementById('fi-'+i); el.onclick=null;
+    if (f.healthy) {
+      total++;
+      if (foodPicked.has(i)) { el.classList.remove('picked'); el.classList.add('correct'); correct++; }
+      else el.classList.add('missed');
+    } else {
+      if (foodPicked.has(i)) { el.classList.remove('picked'); el.classList.add('wrong'); }
+    }
+  });
+  const fb = document.getElementById('food-fb');
+  if (correct===total) {
+    fb.className='food-fb show good';
+    fb.textContent='Perfect! Apple, carrot and water keep your blood sugar stable. Soft drink, chips and burgers cause fast spikes that crash hard and, over time, lead toward insulin resistance and diabetes.';
+    SND.correct();
+  } else {
+    fb.className='food-fb show ok';
+    fb.textContent=`You got ${correct} out of ${total}. Green means blood-sugar-friendly, orange means you missed one. Processed foods and sugary drinks are sneaky because the spike feels like energy, but the crash and long-term damage are real.`;
+  }
+  document.getElementById('food-check').disabled=true;
+  unlockNext();
+}
+
+/* ---- FLIP CARDS ---- */
+const FLIPDATA = [
+  {e:'🚶',front:'Walk 30 min',stat:'58%',desc:'lower type 2 diabetes risk'},
+  {e:'⚽',front:'Play sport',stat:'3x',desc:'better insulin sensitivity'},
+  {e:'💧',front:'Drink water',stat:'26%',desc:'less likely to drink sugary drinks'},
+];
+let flipped = new Set();
+
+function buildFlipCards() {
+  return `
+    <div class="flip-row">${FLIPDATA.map((f,i) => `
+      <div class="flip-wrap" id="fc-${i}" onclick="flipCard(${i})">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="fe">${f.e}</span>${f.front}</div>
+          <div class="flip-back"><span class="fstat">${f.stat}</span><span class="fdesc">${f.desc}</span></div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div class="flip-hint">Tap each card to flip it!</div>`;
+}
+function initFlipCards() { flipped = new Set(); }
+function flipCard(i) {
+  SND.flip();
+  document.getElementById('fc-'+i).classList.toggle('flipped');
+  flipped.add(i);
+  if (flipped.size === FLIPDATA.length) { setTimeout(()=>SND.correct(),200); unlockNext(); }
+}
+
+/* ---- BREATHING ---- */
+function buildBreathing() {
+  return `
+    <div class="breath-wrap">
+      <div class="breath-circle" id="bc">🌬</div>
+      <div class="breath-label" id="bl">Press Start to try it</div>
+      <div class="breath-sub" id="bs">Breathe in... hold... breathe out</div>
+      <button class="breath-start" id="bstart" onclick="startBreath()">Start</button>
+      <div class="breath-done" id="bdone">You just completed a real breathing exercise. Your cortisol actually dropped just now. This directly reduces cravings for sugary junk food. Use it any time you feel stressed or tempted.</div>
+    </div>`;
+}
+
+function startBreath() {
+  if (breathRunning) return;
+  SND.click();
+  breathRunning = true;
+  document.getElementById('bstart').style.display='none';
+  const circle=document.getElementById('bc'), lbl=document.getElementById('bl'), sub=document.getElementById('bs');
+  const phases=[
+    {txt:'Breathe In...',sub:'3 seconds',cls:'inhaling',snd:'breathin'},
+    {txt:'Hold...',sub:'3 seconds',cls:'holding',snd:null},
+    {txt:'Breathe Out...',sub:'3 seconds',cls:'exhaling',snd:'breathout'},
+    {txt:'Breathe In...',sub:'3 seconds',cls:'inhaling',snd:'breathin'},
+    {txt:'Hold...',sub:'3 seconds',cls:'holding',snd:null},
+    {txt:'Breathe Out...',sub:'3 seconds',cls:'exhaling',snd:'breathout'},
+  ];
+  let i = 0;
+  function next() {
+    if (i >= phases.length) {
+      lbl.textContent='Well done!'; sub.textContent='Two full cycles complete.';
+      circle.className='breath-circle exhaling';
+      document.getElementById('bdone').classList.add('show');
+      SND.correct(); unlockNext(); return;
+    }
+    const p=phases[i++]; lbl.textContent=p.txt; sub.textContent=p.sub;
+    circle.className='breath-circle '+p.cls;
+    if (p.snd) SND[p.snd]();
+    breathTimeout = setTimeout(next, 4000);
+  }
+  next();
+}
+
+/* ---- SCENARIO ---- */
+function buildScenario(s) {
+  const opts = s.opts.map((o,i) => `
+    <button class="sopt" onclick="pickScen(${i})" id="sopt-${i}">
+      <span class="sl">${String.fromCharCode(65+i)}</span>${o}
+    </button>`).join('');
+  return `<div class="sscen">${s.sit}</div><div id="sopts">${opts}</div><div class="sfb" id="sfb"></div>`;
+}
+
+function pickScen(idx) {
+  const s = SLIDES[tutStep];
+  document.querySelectorAll('.sopt').forEach((b,i) => {
+    b.disabled=true;
+    if (i===s.correct) b.classList.add('correct');
+    else if (i===idx) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('sfb');
+  const correct = idx===s.correct;
+  fb.textContent = correct ? s.ok : s.bad;
+  fb.className = 'sfb show '+(correct?'good':'bad');
+  correct ? SND.correct() : SND.wrong();
+  unlockNext();
+}
+
+/* ==================== GUIDED TOUR ==================== */
+const TOUR = [
+  {target:'#nb-challenges',title:'Daily Tasks',txt:'Log your healthy choices here each day. Fruit, veggies, water, movement - tick them off to earn XP!',pos:'above'},
+  {target:'#nb-skills',title:'Skill Missions',txt:'Practice stress management, resilience and assertiveness around food choices here.',pos:'above'},
+  {target:'#nb-leaderboard',title:'Leaderboard',txt:'See how you rank against friends and other players across WA and beyond.',pos:'above'},
+  {target:'#xp-fill',title:'Your XP Bar',txt:'Every healthy choice fills this bar. Fill it all the way to level up your character!',pos:'below'}
+];
+let tourStep = 0;
+
+function startTour() {
+  document.getElementById('bnav').classList.add('on');
+  document.getElementById('mute-btn').classList.add('on');
+  buildChallenges(); buildLB('friends'); buildSkill('stress'); buildTodayCard();
+  switchScreen('sh'); updateHome(); checkResilience();
+  tourStep = 0; setTimeout(showTourStep, 400);
+}
+
+function showTourStep() {
+  SND.tap();
+  const step=TOUR[tourStep], el=document.querySelector(step.target);
+  if (!el) { tourEnd(); return; }
+  document.getElementById('tour-ov').classList.add('show');
+  const rect=el.getBoundingClientRect(), pad=8;
+  const beacon=document.getElementById('tour-beacon');
+  beacon.style.cssText=`display:block;left:${rect.left-pad}px;top:${rect.top-pad}px;width:${rect.width+pad*2}px;height:${rect.height+pad*2}px;border-radius:${rect.height>40?'14px':'50px'}`;
+  const bubble=document.getElementById('tour-bubble');
+  bubble.style.display='block';
+  const bw=Math.min(260,window.innerWidth-32); bubble.style.width=bw+'px';
+  const cx=rect.left+rect.width/2, bLeft=Math.max(16,Math.min(cx-bw/2,window.innerWidth-bw-16));
+  bubble.style.left=bLeft+'px';
+  const isAbove=step.pos==='above'||rect.top>window.innerHeight/2;
+  bubble.style.top=isAbove?(rect.top-pad-180)+'px':(rect.bottom+pad+10)+'px';
+  const isLast=tourStep===TOUR.length-1;
+  bubble.innerHTML=`
+    <div class="tb-tag">Step ${tourStep+1} of ${TOUR.length}</div>
+    <div class="tb-title">${step.title}</div>
+    <div class="tb-txt">${step.txt}</div>
+    <button class="tb-btn" onclick="tourNext()">${isLast?'Start Playing! 🎉':'Got it!'}</button>`;
+}
+function tourNext() { tourStep++; if(tourStep>=TOUR.length){tourEnd();return;} showTourStep(); }
+function tourEnd() {
+  document.getElementById('tour-ov').classList.remove('show');
+  document.getElementById('tour-beacon').style.display='none';
+  document.getElementById('tour-bubble').style.display='none';
+  go('home');
+  setTimeout(() => crunchySay('Welcome! Tap me any time for a health tip!', 'excited', 3000), 600);
+  resetCrunchyIdleTimer();
+}
+
+/* ==================== RESILIENCE SAVE ==================== */
+const RS_Q = {
+  q:'You have not logged anything for two days. What is the right move?',
+  opts:[
+    'Give up and start fresh next month',
+    'Start again today, missing days is completely normal',
+    'Wait until you feel more motivated'
+  ],
+  correct:1,
+  ok:'Exactly. Resilience is deciding to try again. Your streak is saved and your body will thank you.',
+  bad:'Waiting for motivation is a trap, it usually comes after you start. But you showed up today, so half your streak is saved!'
+};
+
+function checkResilience() {
+  try {
+    const last=localStorage.getItem('pf_last_visit'), today=new Date().toDateString();
+    if (last && last!==today) {
+      const diff=Math.floor((Date.now()-new Date(last).getTime())/86400000);
+      if (diff>=2) setTimeout(showResilienceModal, 1400);
+    }
+    localStorage.setItem('pf_last_visit', today);
+  } catch(e){}
+}
+
+function showResilienceModal() {
+  document.getElementById('rs-q').textContent=RS_Q.q;
+  document.getElementById('rs-opts').innerHTML=RS_Q.opts.map((o,i)=>`
+    <button class="rs-opt" onclick="pickResilienceOpt(${i})" id="rso-${i}">
+      <span class="rl">${String.fromCharCode(65+i)}</span>${o}
+    </button>`).join('');
+  document.getElementById('rs-ov').classList.add('show');
+}
+
+function pickResilienceOpt(idx) {
+  document.querySelectorAll('.rs-opt').forEach((b,i) => {
+    b.disabled=true;
+    if (i===RS_Q.correct) b.classList.add('correct');
+    else if (i===idx) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('rs-fb');
+  const correct=idx===RS_Q.correct;
+  fb.textContent=correct?RS_Q.ok:RS_Q.bad;
+  fb.className='rs-fb show '+(correct?'good':'bad');
+  correct ? SND.correct() : SND.wrong();
+  Object.keys(S.streaks).forEach(k => S.streaks[k]=Math.floor(S.streaks[k]/2));
+  updateHome();
+  document.getElementById('rs-close').classList.add('show');
+}
+function closeResilience() { document.getElementById('rs-ov').classList.remove('show'); }
+
+/* ==================== MAIN GAME ==================== */
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function go(name) {
+  SND.click();
+  const map={home:'sh',challenges:'sc',skills:'sk',leaderboard:'slb'};
+  switchScreen(map[name]);
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const nb=document.getElementById('nb-'+name); if(nb) nb.classList.add('on');
+  if (name==='home') { updateHome(); buildTodayCard(); crunchyWakeUp(); }
+  if (name==='leaderboard') buildLB(document.querySelector('.ltab.on')?.dataset?.tab||'friends');
+}
+
+/* ---- CHALLENGES ---- */
+const CHALLENGES = [
+  {id:'fruit',  ico:'🍎',col:'g',lft:'lft-g',name:'Eat a Piece of Fruit',       desc:'Fruit gives vitamins and natural sugar your body loves',xp:50,sk:'fruit'},
+  {id:'water',  ico:'💧',col:'b',lft:'lft-b',name:'Drink 6 Glasses of Water',   desc:'Staying hydrated cuts junk food cravings',            xp:30,sk:'water'},
+  {id:'walk',   ico:'🚶',col:'o',lft:'lft-o',name:'Walk for 20 Minutes',         desc:'Even a walk burns blood sugar without needing insulin', xp:100,sk:'move'},
+  {id:'veg',    ico:'🥦',col:'g',lft:'lft-g',name:'Eat a Vegetable',             desc:'Add fibre to slow down blood sugar spikes',           xp:50},
+  {id:'sport',  ico:'⚽',col:'o',lft:'lft-o',name:'Play a Sport',                desc:'Sport triples insulin sensitivity for hours',          xp:150,sk:'move'},
+  {id:'nosoda', ico:'🚫',col:'y',lft:'lft-y',name:'Skip Soft Drink Today',       desc:'Ditching one can cuts 10 teaspoons of sugar',         xp:60},
+  {id:'crunchsip',ico:'🥕',col:'t',lft:'lft-t',name:'Crunch&Sip at School',     desc:'Eat fruit or veg AND have some water today',          xp:40},
+  {id:'breath', ico:'🌬',col:'b',lft:'lft-b',name:'Breathing Exercise',          desc:'Drop cortisol in 2 minutes and beat cravings',        xp:30},
+  {id:'cook',   ico:'🍳',col:'y',lft:'lft-y',name:'Help Cook a Healthy Meal',    desc:'Home cooked food has less hidden sugar',              xp:80},
+  {id:'sleep',  ico:'😴',col:'p',lft:'lft-p',name:'Get 8 Hours of Sleep',        desc:'Poor sleep spikes hunger hormones the next day',      xp:60},
+];
+
+function buildTodayCard() {
+  const next=CHALLENGES.find(c=>!S.done.has(c.id))||CHALLENGES[0], done=S.done.has(next.id);
+  document.getElementById('today-card').innerHTML=`
+    <div class="today-lbl">🥕 Today's Top Task</div>
+    <div class="today-row">
+      <div class="today-ico">${next.ico}</div>
+      <div class="today-info"><div class="today-name">${next.name}</div><div class="today-desc">${next.desc}</div></div>
+      ${done?'<button class="today-xpbtn done" disabled>✅</button>'
+        :`<button class="today-xpbtn" onclick="doCh('${next.id}',event);buildTodayCard()">+${next.xp} XP</button>`}
+    </div>`;
+}
+
+function buildChallenges() {
+  document.getElementById('ch-list').innerHTML=CHALLENGES.map(c=>`
+    <div class="ch-card ${c.lft}${S.done.has(c.id)?' done':''}">
+      <div class="ch-ico ${c.col}">${c.ico}</div>
+      <div class="ch-info"><div class="ch-name">${c.name}</div><div class="ch-desc">${c.desc}</div></div>
+      ${S.done.has(c.id)?'<button class="xpb done" disabled>✅</button>'
+        :`<button class="xpb" onclick="doCh('${c.id}',event)">+${c.xp} XP</button>`}
+    </div>`).join('');
+}
+
+function doCh(id, evt) {
+  if (S.done.has(id)) return;
+  const c=CHALLENGES.find(x=>x.id===id); if(!c) return;
+  S.done.add(id);
+  if (c.sk) S.streaks[c.sk]++;
+  if (S.streaks.water>=3 && !S.badges.has('hydration')) {
+    S.badges.add('hydration');
+    setTimeout(()=>{SND.badge();showToast('💧','Badge Earned!','Hydration Hero!');},1600);
+  }
+  if (S.done.has('veg') && !S.badges.has('veggie')) {
+    S.badges.add('veggie');
+    setTimeout(()=>{SND.badge();showToast('🥦','Badge Earned!','Veggie Champion!');},1600);
+  }
+  if (S.done.has('nosoda') && !S.badges.has('nosoda')) {
+    S.badges.add('nosoda');
+    setTimeout(()=>{SND.badge();showToast('🚫','Badge Earned!','Sugar Dodger!');},1600);
+  }
+  SND.xp();
+  if (evt) xpBurst(evt, '+'+c.xp+' XP!');
+  addXP(c.xp);
+  showToast('⚡', c.name, '+'+c.xp+' XP earned!');
+  const msg=CRUNCHY_TASK[Math.floor(Math.random()*CRUNCHY_TASK.length)];
+  setTimeout(()=>crunchySay(msg,'excited',2500), 200);
+  buildChallenges(); updateHome(); buildTodayCard();
+}
+
+function updateHome() {
+  document.getElementById('h-name').textContent=S.name;
+  document.getElementById('h-lv').textContent=S.level;
+  document.getElementById('h-xp').textContent=S.xp;
+  const cur=S.thresholds[S.level-1]||0, nxt=S.thresholds[S.level]||cur+500;
+  const pct=Math.min(100,((S.xp-cur)/(nxt-cur))*100);
+  document.getElementById('h-xpn').textContent=nxt;
+  document.getElementById('xp-fill').style.width=pct+'%';
+  document.getElementById('xp-left').textContent=(nxt-S.xp)+' to go';
+  document.getElementById('s-fruit').textContent=S.streaks.fruit;
+  document.getElementById('s-water').textContent=S.streaks.water;
+  document.getElementById('s-move').textContent=S.streaks.move;
+}
+
+function addXP(amt) {
+  S.xp += amt;
+  const old=S.level;
+  while (S.level<S.thresholds.length-1 && S.xp>=S.thresholds[S.level]) S.level++;
+  updateHome();
+  if (S.level>old) setTimeout(()=>showLV(S.level), 600);
+}
+
+function showToast(ico, title, sub) {
+  ['t-ico','t-title','t-sub'].forEach((id,i)=>document.getElementById(id).textContent=[ico,title,sub][i]);
+  const t=document.getElementById('toast'); t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+function showLV(lv) {
+  document.getElementById('lv-num').textContent=lv;
+  document.getElementById('lv-ov').classList.add('show');
+  SND.levelup(); confetti();
+  const msg=CRUNCHY_LEVEL[Math.floor(Math.random()*CRUNCHY_LEVEL.length)];
+  setTimeout(()=>crunchySay(msg,'excited',3500), 400);
+}
+function closeLv() { document.getElementById('lv-ov').classList.remove('show'); }
+
+function confetti() {
+  const c=['#00C853','#FF4081','#00B4D8','#FFD600','#FF6B35','#7C4DFF','#FF5252','#69F0AE','#FFCC00'];
+  for (let i=0; i<90; i++) {
+    const p=document.createElement('div'); p.className='cf';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-16px;width:${7+Math.random()*8}px;height:${7+Math.random()*8}px;background:${c[~~(Math.random()*c.length)]};animation-duration:${1.4+Math.random()*2}s;animation-delay:${Math.random()*.6}s;border-radius:${Math.random()>.5?'50%':'3px'}`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(), 4200);
+  }
+}
+
+function xpBurst(evt, txt) {
+  const el=document.createElement('div'); el.className='xp-burst'; el.textContent=txt;
+  const x=evt.clientX||window.innerWidth/2, y=evt.clientY||200;
+  el.style.left=(x-40)+'px'; el.style.top=(y-10)+'px';
+  document.body.appendChild(el); setTimeout(()=>el.remove(), 1000);
+}
+
+/* ==================== SKILLS ==================== */
+const ANTHROPIC_API_KEY = '';
+
+const SCENARIOS = {
+  stress: [
+    {
+      id:'s1', type:'mcq', title:'Scenario 1: Big test tomorrow',
+      sit:'You have a big test tomorrow and your stress is making you want to eat chips and watch TV instead of studying. This is cortisol in action, driving you toward junk food.',
+      opts:[
+        'Eat a bag of chips to take the edge off',
+        'Do 5 minutes of deep breathing, then write a study plan',
+        'Just ignore it and try to sleep'
+      ],
+      correct:1,
+      ok:'Breathing lowers cortisol first, which kills the junk food craving and makes it easier to focus. This is literally how you break the stress-to-obesity chain.',
+      bad:'Eating junk food when stressed is exactly what cortisol wants you to do. It leads to more cravings, not fewer. Calming your body first is the better move.',
+      xp:80
+    },
+    {
+      id:'s2', type:'mcq', title:'Scenario 2: Energy drink temptation',
+      sit:'You had a rough day and you are really tired. A friend offers you an energy drink saying it will fix everything. One can has around 27 grams of sugar, the same as 7 teaspoons.',
+      opts:[
+        'Take it, you need the energy boost',
+        'Have a glass of water and a piece of fruit instead',
+        'Skip eating and drinking anything'
+      ],
+      correct:1,
+      ok:'Water and fruit give you real energy without a blood sugar spike and crash. Energy drinks are one of the top drivers of insulin resistance in teenagers.',
+      bad:'That sugar hit will spike your blood sugar and crash it hard an hour later, leaving you more tired and craving more sugar. Water and fruit is always the smarter play.',
+      xp:80
+    },
+    {
+      id:'s3', type:'mcq', title:'Scenario 3: Pre-match nerves',
+      sit:'Your heart is pounding before a big sports match. You feel like you might freeze. Your cortisol is surging right now and your body is in fight-or-flight mode.',
+      opts:[
+        'Tell yourself you are going to mess up',
+        'Do box breathing: 4 counts in, 4 hold, 4 out',
+        'Eat a chocolate bar for a quick energy boost'
+      ],
+      correct:1,
+      ok:'Box breathing is used by elite athletes and military personnel to calm down fast. It drops cortisol and brings your focus back. And it works.',
+      bad:'A chocolate bar will spike your blood sugar right before you need your body to perform. Box breathing is the actual tool here.',
+      xp:80
+    },
+  ],
+  resilience: [
+    {
+      id:'r1', type:'mcq', title:'Scenario 1: Missed the healthy eating goal',
+      sit:'You have missed your healthy eating goal three days in a row. You ate fast food twice and skipped fruit entirely. Part of you wants to give up on the whole thing.',
+      opts:[
+        'Give up, it is clearly not working',
+        'Accept the slip and plan to start fresh tomorrow',
+        'Eat comfort food first and decide later'
+      ],
+      correct:1,
+      ok:'That is resilience. Consistent healthy eating is what prevents type 2 diabetes long term, and nobody gets it perfect. Choosing to restart is the most important move.',
+      bad:'Giving up completely is the only way healthy habits fail. Missing days is normal. Every restart matters for your long-term health.',
+      xp:80
+    },
+    {
+      id:'r2', type:'mcq', title:'Scenario 2: Team lost the game',
+      sit:'Your team just lost a big match and some players are blaming each other. Someone suggests getting takeaway to feel better, which is a classic stress-eating trap.',
+      opts:[
+        'Join in and eat whatever, you lost anyway',
+        'Suggest the team get together and eat something decent, then plan the next training session',
+        'Go home alone without saying anything'
+      ],
+      correct:1,
+      ok:'Turning a loss into a reason to come back stronger is resilience. And steering away from the takeaway binge protects the whole team from the cortisol-junk food cycle.',
+      bad:'Stress eating after a loss feels good for about 20 minutes, then the blood sugar crash makes everyone feel worse. Channelling that energy into planning is always the better move.',
+      xp:80
+    },
+    {
+      id:'r3', type:'mcq', title:'Scenario 3: Doctor says you are at risk',
+      sit:'Your doctor says your blood sugar is higher than it should be for your age. They say you are at risk of prediabetes. It is a scary thing to hear.',
+      opts:[
+        'Ignore it and hope it sorts itself out',
+        'Feel worried for a moment, then ask what specific changes would actually make a difference',
+        'Decide it is already too late to change anything'
+      ],
+      correct:1,
+      ok:'Prediabetes is reversible in the majority of cases with diet and exercise changes. Asking for specific guidance and acting on it is exactly what resilience looks like here.',
+      bad:'Prediabetes is one of the most reversible health conditions there is. Ignoring it or giving up is the only way it gets worse. Asking for help and acting on it is the move.',
+      xp:80
+    },
+  ],
+  assertive: [
+    {
+      id:'a1', type:'mcq', title:'Scenario 1: Skip training for takeaway',
+      sit:'Your friend says "forget training, come get a large frozen Coke and chips with us." Eating fast food 3 or more times a week is strongly linked to obesity and insulin resistance in teenagers.',
+      opts:[
+        'Agree and skip training',
+        'Say nothing and feel bad about it later',
+        'Say "I am going to training, let\'s get something after!"'
+      ],
+      correct:2,
+      ok:'You kept your goal and kept the friendship. Cutting back on sugary drinks and fast food is one of the most powerful things you can do for your long-term health.',
+      bad:'There is almost always a middle ground. You can protect your health and keep your social life. Suggesting an alternative is assertiveness in action.',
+      xp:80
+    },
+    {
+      id:'a2', type:'mcq', title:'Scenario 2: Pushed to drink soft drink at a party',
+      sit:'Someone keeps offering you soft drink at a party even after you said no once. Sugary drinks are one of the leading dietary causes of type 2 diabetes in young Australians.',
+      opts:[
+        'Give in to stop the awkward feeling',
+        'Get angry and make a scene',
+        'Calmly say "no thanks, I am good with water" and change the topic'
+      ],
+      correct:2,
+      ok:'A calm, confident no without over-explaining is perfect. Your long-term health is worth that moment of mild awkwardness.',
+      bad:'You do not need to justify your choice to anyone. A simple calm no is always enough. That soft drink is not worth the blood sugar spike.',
+      xp:80
+    },
+    {
+      id:'a3', type:'mcq', title:'Scenario 3: Friends grab chips without asking',
+      sit:'Your friends buy a large bag of hot chips and pass them around expecting everyone to eat some. You are trying to cut back on processed snacks to improve your blood sugar.',
+      opts:[
+        'Just eat them to avoid making it weird',
+        'Say "all good, I am going to skip this one" and stay in the conversation',
+        'Leave the group without saying anything'
+      ],
+      correct:1,
+      ok:'A casual, confident decline keeps you in the conversation without the chips in your hand. No lecture needed, no drama. That is assertiveness.',
+      bad:'You can stay present with your friends without eating something you do not want. A simple "I am going to skip this one" is all it takes.',
+      xp:80
+    },
+    {
+      id:'a4', type:'mcq', title:'Scenario 4: Pressured online to order delivery',
+      sit:'Someone in your group chat is organising a fast food delivery order and keeps tagging you saying "just get something, everyone else is." The meal is expensive and not healthy.',
+      opts:[
+        'Order something to fit in',
+        'Reply "I am sorted for food tonight, have fun!" and leave it at that',
+        'Ignore the messages and feel guilty about it'
+      ],
+      correct:1,
+      ok:'Clear and direct without drama. You do not need to explain your food choices to anyone. That kind of quiet confidence is exactly what assertiveness looks like.',
+      bad:'Online pressure around food is real. A calm, short reply keeps your boundary without making a big deal of it. You do not owe anyone an explanation.',
+      xp:80
+    },
+    {
+      id:'a5', type:'free', title:'Scenario 5: Teased for eating healthy at school',
+      sit:'You brought a fruit salad and water to school as part of your Crunch&Sip habit. Some friends start making fun of you for "being too healthy." Write what you would say back to them.',
+      prompt:'Type what you would actually say to your friends here...',
+      xp:100
+    },
+  ]
+};
+
+function buildSkill(tab) {
+  document.getElementById('skill-cnt').innerHTML=SCENARIOS[tab].map(s=>{
+    const done=S.doneS.has(s.id);
+    if (s.type==='free') return buildFreeSkill(s, done);
+    return buildMcqSkill(s, done, tab);
+  }).join('');
+}
+
+function buildMcqSkill(s, done, tab) {
+  return `<div class="sc-card ${tab}">
+    <div class="sc-title">${s.title}</div>
+    <div class="sc-sit">${s.sit}</div>
+    <div id="opts-${s.id}">${s.opts.map((o,i)=>`
+      <button class="sc-opt${done&&i===s.correct?' correct':''}" onclick="doScen('${s.id}',${i})" ${done?'disabled':''}>
+        <span class="ol">${String.fromCharCode(65+i)}</span>${o}
+      </button>`).join('')}</div>
+    <div class="sc-fb${done?' good show':''}" id="fb-${s.id}">${done?s.ok:''}</div>
+  </div>`;
+}
+
+function buildFreeSkill(s, done) {
+  return `<div class="sc-card assertive">
+    <div class="sc-title">${s.title}</div>
+    <div class="sc-sit">${s.sit}</div>
+    <div class="free-wrap">
+      <div class="free-prompt">What would you say?</div>
+      <textarea class="free-textarea" id="ft-${s.id}" placeholder="${s.prompt}" ${done?'disabled':''}></textarea>
+      ${done
+        ?`<div class="free-result show" id="fr-${s.id}">You already completed this one!</div>`
+        :`<button class="free-submit" id="fsub-${s.id}" onclick="submitFree('${s.id}',${s.xp})">Get Feedback</button>
+          <div class="free-loading" id="fl-${s.id}">Thinking about your response...</div>
+          <div class="free-result" id="fr-${s.id}"></div>
+          <div class="api-note">Your response is sent to an AI for personalised feedback.</div>`}
+    </div>
+  </div>`;
+}
+
+function skillTab(tab, el) {
+  SND.click();
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on'); buildSkill(tab);
+}
+
+function doScen(sid, idx) {
+  if (S.doneS.has(sid)) return;
+  const sc=Object.values(SCENARIOS).flat().find(s=>s.id===sid); if(!sc) return;
+  document.querySelectorAll(`#opts-${sid} .sc-opt`).forEach((b,i)=>{
+    b.disabled=true;
+    if (i===sc.correct) b.classList.add('correct');
+    else if (i===idx) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb-'+sid);
+  if (idx===sc.correct) {
+    fb.textContent=sc.ok; fb.className='sc-fb good show';
+    S.doneS.add(sid); addXP(sc.xp); SND.correct();
+    showToast('🧠','Correct!','+'+sc.xp+' XP!');
+    const msg=CRUNCHY_CORRECT[Math.floor(Math.random()*CRUNCHY_CORRECT.length)];
+    setTimeout(()=>crunchySay(msg,'excited',2500), 300);
+  } else {
+    fb.textContent=sc.bad; fb.className='sc-fb bad show'; SND.wrong();
+    const msg=CRUNCHY_WRONG[Math.floor(Math.random()*CRUNCHY_WRONG.length)];
+    setTimeout(()=>crunchySay(msg,'surprised',2500), 300);
+  }
+}
+
+async function submitFree(sid, xp) {
+  const ta=document.getElementById('ft-'+sid), text=ta.value.trim();
+  if (!text||text.length<10) { ta.style.borderColor='var(--red)'; setTimeout(()=>ta.style.borderColor='',1600); return; }
+  const sub=document.getElementById('fsub-'+sid), loading=document.getElementById('fl-'+sid), result=document.getElementById('fr-'+sid);
+  sub.disabled=true; ta.disabled=true; loading.classList.add('show');
+  let feedback='';
+  if (ANTHROPIC_API_KEY) {
+    try {
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:200,
+          system:'You are a supportive health coach for teenagers aged 12 to 16. A student completed an assertiveness exercise about responding to friends who teased them for eating healthy at school. Give them short, warm, specific feedback in 2 to 3 sentences. Be encouraging and genuine. Point out what they did well. Avoid being preachy. Do not start with "Great" or "Excellent". Keep it casual and real. No em dashes.',
+          messages:[{role:'user',content:`The student wrote: "${text}"`}]
+        })
+      });
+      const data=await res.json(); feedback=data.content?.[0]?.text||'';
+    } catch(e){ feedback=''; }
+  }
+  if (!feedback) feedback=getFallbackFeedback(text);
+  loading.classList.remove('show'); result.textContent=feedback; result.classList.add('show'); sub.style.display='none';
+  if (!S.doneS.has(sid)) { S.doneS.add(sid); addXP(xp); SND.correct(); showToast('💬','Nice response!','+'+xp+' XP!'); }
+}
+
+function getFallbackFeedback(text) {
+  const lower=text.toLowerCase();
+  const hasAlt=lower.includes('instead')||lower.includes('after')||lower.includes('later')||lower.includes('how about')||lower.includes('maybe');
+  const hasBound=lower.includes('no')||lower.includes("can't")||lower.includes("won't")||lower.includes('not going to')||lower.includes('actually');
+  const isCalm=!lower.includes('!!')&&!lower.includes('shut')&&!lower.includes('whatever');
+  if (hasAlt&&hasBound) return 'You held your ground AND kept the energy positive by suggesting something else. That is exactly how assertiveness works in real life. Crunchy approves.';
+  if (hasAlt) return 'Good move suggesting an alternative. That keeps the friendship going while still backing your choices. You could make it even stronger by being a bit more direct about what you actually want to do.';
+  if (hasBound&&isCalm) return 'Clear and direct without being harsh. That takes real confidence. Throwing in a suggestion of something else to do together would make it land even better.';
+  return 'You wrote something and put yourself out there, that is the first step. The most effective responses are calm, specific and often suggest an alternative. Try tweaking yours with that in mind.';
+}
+
+/* ==================== LEADERBOARD ==================== */
+const LB = {
+  friends:[{n:'Danny',e:'🥕',x:5400},{n:'Noah',e:'⚡',x:4100},{n:'Jude',e:'🤸',x:3600},{n:'Riley',e:'🚴',x:2900},{n:'Jordan',e:'⚽',x:2100}],
+  local:[{n:'TannerFit',e:'🏋',x:8800},{n:'RunnerKid22',e:'🏃',x:7600},{n:'GreenSmoothie',e:'🥤',x:6200},{n:'Jamie',e:'🥕',x:5400},{n:'CoachMike',e:'⚽',x:4900}],
+  global:[{n:'FitKing_AU',e:'🦘',x:45200},{n:'HealthHero99',e:'💪',x:38900},{n:'SpeedDemon',e:'⚡',x:31200},{n:'WaterQueen',e:'💧',x:27400},{n:'ZenMaster',e:'🧘',x:22100}]
+};
+
+function buildLB(tab) {
+  const data=[...LB[tab],{n:S.name+' (You)',e:S.avatar,x:S.xp,you:true}].sort((a,b)=>b.x-a.x);
+  const [p2,p1,p3]=[data[1],data[0],data[2]];
+  const ht=[70,105,52];
+  const bg=['#D0F4FF','linear-gradient(180deg,#FFD600,#B89A00)','#EDE7FF'];
+  const tc=['var(--blue-b)','#7a5500','var(--purple-b)'];
+  let h='<div class="podium">';
+  [p2,p1,p3].forEach((p,i)=>{
+    if(!p){h+='<div class="pod"></div>';return;}
+    h+=`<div class="pod${i===1?' p1':''}"><div class="pod-av">${p.e}</div><div class="pod-name">${p.n}</div><div class="pod-xp">${p.x.toLocaleString()} XP</div><div class="pod-blk" style="height:${ht[i]}px;background:${bg[i]};color:${tc[i]}">${[2,1,3][i]}</div></div>`;
+  });
+  h+='</div>';
+  data.slice(3).forEach((p,i)=>{
+    h+=`<div class="lb-row${p.you?' you':''}"><span class="lb-rank">${i+4}</span><span class="lb-av">${p.e}</span><span class="lb-nm">${p.n}</span><span class="lb-xp">${p.x.toLocaleString()} XP</span></div>`;
+  });
+  document.getElementById('lb-cnt').innerHTML=h;
+}
+
+function lbTab(tab, el) {
+  SND.click();
+  document.querySelectorAll('.ltab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on'); el.dataset.tab=tab; buildLB(tab);
+}
+</script>
+</body>
+</html>
