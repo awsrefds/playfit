@@ -1607,13 +1607,15 @@ function getFallbackFeedback(text) {
 
 /* ==================== LEADERBOARD ==================== */
 const LB = {
-  friends:[{n:'Danny',e:'🥕',x:5400},{n:'Noah',e:'⚡',x:4100},{n:'Jude',e:'🤸',x:3600},{n:'Riley',e:'🚴',x:2900},{n:'Jordan',e:'⚽',x:2100}],
-  local:[{n:'TannerFit',e:'🏋',x:8800},{n:'RunnerKid22',e:'🏃',x:7600},{n:'GreenSmoothie',e:'🥤',x:6200},{n:'Jamie',e:'🥕',x:5400},{n:'CoachMike',e:'⚽',x:4900}],
-  global:[{n:'FitKing_AU',e:'🦘',x:45200},{n:'HealthHero99',e:'💪',x:38900},{n:'SpeedDemon',e:'⚡',x:31200},{n:'WaterQueen',e:'💧',x:27400},{n:'ZenMaster',e:'🧘',x:22100}]
+  friends:[{n:'Danny',e:'🥕',x:420},{n:'Noah',e:'⚡',x:360},{n:'Jude',e:'🤸',x:280},{n:'Riley',e:'🚴',x:190},{n:'Jordan',e:'⚽',x:120}],
+  local:[{n:'TannerFit',e:'🏋',x:950},{n:'RunnerKid22',e:'🏃',x:820},{n:'GreenSmoothie',e:'🥤',x:690},{n:'Jamie',e:'🥕',x:540},{n:'CoachMike',e:'⚽',x:420}],
+  global:[{n:'FitKing_AU',e:'🦘',x:1800},{n:'HealthHero99',e:'💪',x:1550},{n:'SpeedDemon',e:'⚡',x:1300},{n:'WaterQueen',e:'💧',x:1050},{n:'ZenMaster',e:'🧘',x:820}]
 };
 
 function buildLB(tab) {
-  const data=[...LB[tab],{n:S.name+' (You)',e:S.avatar,x:S.xp,you:true}].sort((a,b)=>b.x-a.x);
+  const base=[...LB[tab]];
+  const displayXp=Math.max(0, S.xp||0); // start at 0 and climb with real XP
+  const data=[...base,{n:S.name+' (You)',e:S.avatar,x:displayXp,you:true}].sort((a,b)=>b.x-a.x);
   const [p2,p1,p3]=[data[1],data[0],data[2]];
   const ht=[70,105,52];
   const bg=['#D0F4FF','linear-gradient(180deg,#FFD600,#B89A00)','#EDE7FF'];
